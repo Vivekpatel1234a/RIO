@@ -11,8 +11,8 @@ import os
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import FileResponse, Response, StreamingResponse
 
 from ..services.flood import flood_pipeline
 
@@ -59,7 +59,7 @@ async def list_videos():
 
 
 @router.get("/videos/file/{filename:path}")
-async def stream_video(filename: str):
+async def stream_video(filename: str, request: Request):
     d = _recordings_dir()
     if not d:
         raise HTTPException(status_code=404, detail="recordings/ folder not found")
@@ -69,7 +69,53 @@ async def stream_video(filename: str):
         raise HTTPException(status_code=403, detail="path outside recordings/")
     if not path.is_file() or path.suffix.lower() not in VIDEO_EXTS:
         raise HTTPException(status_code=404, detail="video not found")
-    return FileResponse(str(path), media_type=VIDEO_MIME[path.suffix.lower()])
+
+    media_type = VIDEO_MIME[path.suffix.lower()]
+    file_size = path.stat().st_size
+
+    # Starlette <0.39 FileResponse has no Range support, which breaks seeking in
+    # the player. Handle `Range: bytes=start-end` ourselves and return 206.
+    range_header = request.headers.get("range")
+    if range_header and range_header.lower().startswith("bytes="):
+        try:
+            start_s, _, end_s = range_header[6:].partition("-")
+            start = int(start_s) if start_s else 0
+            end = int(end_s) if end_s else file_size - 1
+            end = min(end, file_size - 1)
+            if start > end or start >= file_size:
+                return Response(
+                    status_code=416,
+                    headers={"Content-Range": f"bytes */{file_size}"},
+                )
+            length = end - start + 1
+
+            def _iter():
+                with open(path, "rb") as f:
+                    f.seek(start)
+                    remaining = length
+                    while remaining > 0:
+                        chunk = f.read(min(1024 * 1024, remaining))
+                        if not chunk:
+                            break
+                        remaining -= len(chunk)
+                        yield chunk
+
+            return StreamingResponse(
+                _iter(),
+                status_code=206,
+                media_type=media_type,
+                headers={
+                    "Content-Range": f"bytes {start}-{end}/{file_size}",
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": str(length),
+                },
+            )
+        except ValueError:
+            pass  # malformed Range -> fall back to a full response
+
+    return FileResponse(
+        str(path), media_type=media_type, headers={"Accept-Ranges": "bytes"}
+    )
 
 
 @router.get("/meta")
