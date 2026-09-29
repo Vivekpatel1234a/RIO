@@ -1,29 +1,36 @@
+# Build context: repository ROOT (Railway: set Dockerfile path to
+# RIO-main/RIO-main/backend/Dockerfile and leave Root Directory empty).
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies (GDAL, etc.)
+# GDAL / build tooling (rasterio, psycopg2)
 RUN apt-get update && apt-get install -y \
     gdal-bin \
     libgdal-dev \
-    libpq-dev \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Set GDAL version for rasterio
-ENV GDAL_VERSION=3.6.4
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
-COPY requirements.txt .
+# Python deps
+COPY RIO-main/RIO-main/backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Backend source
+COPY RIO-main/RIO-main/backend/ ./
 
-# Create storage directories
+# Real HEC-RAS rasters (auto-discovered at /app/resources by the flood pipeline)
+COPY resources ./resources
+
+# Recordings are gitignored — uncomment once the videos are committed
+# COPY recordings ./recordings
+
 RUN mkdir -p /app/storage /app/demo
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Shell form so ${PORT} is expanded at runtime (Railway injects PORT)
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
