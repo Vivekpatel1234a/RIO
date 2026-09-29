@@ -146,9 +146,12 @@ it then appears in `/meta` and can be wired into the timeline.
 ## 6. Known issues & pitfalls
 
 1. **`next dev` can crash on a stale `.next/`** — the environment's safe-delete shim
-   blocks bulk deletions, and a corrupted webpack cache yields 500s
-   (`Cannot find module './682.js'`). Fix: stop the server, `rm -rf frontend/.next`,
-   restart. This happens occasionally after large batch edits.
+   blocks bulk deletions (>50 files), and a corrupted webpack cache yields 500s
+   (`Cannot find module './682.js'`). Fix: stop the server, delete `frontend/.next`,
+   restart. Triggered by large batch edits **and by running `next build` then
+   `next dev`**. Bash `rm -rf` may also be blocked — use PowerShell instead:
+   `Remove-Item -Recurse -Force frontend/.next` (native .NET, not intercepted by the
+   node shim).
 2. **`requirements.txt` pins won't install on Python 3.13** (`numpy==1.26.4`). The venv
    uses newer versions instead; `rasterio`/`geopandas` are optional (code degrades
    gracefully except `dem_processor.py`, which is not imported anywhere).
