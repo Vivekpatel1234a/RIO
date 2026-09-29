@@ -44,6 +44,10 @@ exact Vercel env vars that wire the two together).
 Koyeb free (always-on Docker container, no cold start), Render free as fallback,
 plus the Vercel env vars. Same `backend/Dockerfile` works on both.
 
+**AWS (currently deployed)**: [`AWS-DEPLOY.md`](AWS-DEPLOY.md) — single EC2
+`t3.micro` (~$11/mo) with a stable HTTPS URL (`sslip.io` + Caddy), no domain
+required. Live: `https://13-235-165-42.sslip.io`.
+
 ## Data notes
 
 - Rasters in `resources/` are EPSG:2271 (US survey feet), reprojected to
