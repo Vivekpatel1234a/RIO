@@ -5,7 +5,7 @@
 // All values are SYNTHETIC DEMONSTRATION DATA.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { SimulationJobStatus, FloodResult, ImpactResult, ModelComparison, HydrologyPoint } from './index';
+import type { SimulationJobStatus, FloodResult, ImpactResult, ModelComparison, HydrologyPoint } from '@/types';
 
 // Re-export locally so pages don't need two imports
 export type { SimulationJobStatus, FloodResult, ImpactResult, ModelComparison, HydrologyPoint };
