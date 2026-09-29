@@ -184,9 +184,29 @@ class FloodRasterPipeline:
         return Path(env) if env else None
 
     # -- inventory ----------------------------------------------------------
-    def inventory(self) -> Dict[str, Any]:
-        if self._inventory_cache is not None:
+    def inventory(self, force: bool = False) -> Dict[str, Any]:
+        """Inventory of the source rasters.
+
+        The full-resolution block-wise stats are expensive (tens of CPU
+        seconds on the ~100M-cell rasters), so the result is cached BOTH in
+        memory and on disk (`storage/flood_cache/inventory.json`). Hosts with
+        a CPU quota (e.g. PythonAnywhere) should run `precompute_flood.py`
+        once from a console and then just serve the cached JSON.
+        """
+        if os.environ.get("FLOOD_REFRESH_INVENTORY") == "1":
+            force = True
+        if not force and self._inventory_cache is not None:
             return self._inventory_cache
+        cache_file = self.cache_dir / "inventory.json"
+        current_dir = str(self.raster_dir) if self.raster_dir else None
+        if not force and cache_file.exists():
+            try:
+                cached = json.loads(cache_file.read_text())
+                if cached.get("raster_dir") == current_dir:
+                    self._inventory_cache = cached
+                    return cached
+            except Exception:
+                pass  # stale/corrupt cache -> recompute
         files: List[Dict[str, Any]] = []
         for key, spec in STATES.items():
             entry: Dict[str, Any] = {"state": key, "file": spec["file"],
@@ -229,8 +249,11 @@ class FloodRasterPipeline:
                 if spec["file"].lower().endswith(".vrt"):
                     entry["vrt_metadata"] = self._parse_vrt(path)
             files.append(entry)
-        self._inventory_cache = {"raster_dir": str(self.raster_dir) if self.raster_dir else None,
-                                 "files": files}
+        self._inventory_cache = {"raster_dir": current_dir, "files": files}
+        try:
+            cache_file.write_text(json.dumps(self._inventory_cache))
+        except Exception:
+            pass  # read-only cache dir — in-memory cache still works
         return self._inventory_cache
 
     @staticmethod

@@ -20,8 +20,10 @@ class Settings(BaseSettings):
     STORAGE_PATH: str = "./storage"
     DEMO_DATA_PATH: str = "./demo"
 
-    # CORS
+    # CORS — exact origins, plus an optional regex for wildcard hosts
+    # (e.g. r"https://.*\.vercel\.app" so Vercel preview deploys work too)
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:3001"
+    CORS_ORIGIN_REGEX: str = ""
 
     # External Model Executables (empty = use mock)
     DELFT3D_EXECUTABLE: str = ""

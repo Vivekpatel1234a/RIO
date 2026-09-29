@@ -36,6 +36,14 @@ The backend is **not** Vercel-serverless compatible as-is (needs a writable
 filesystem for its raster cache and GDAL/rasterio wheels) — host it on a
 long-running service (Render / Fly.io / Railway / a VM).
 
+Hosting the backend on **PythonAnywhere**: see
+[`DEPLOY-PYTHONANYWHERE.md`](DEPLOY-PYTHONANYWHERE.md) (step-by-step, plus the
+exact Vercel env vars that wire the two together).
+
+**Free backend hosting (recommended)**: [`DEPLOY-FREE.md`](DEPLOY-FREE.md) —
+Koyeb free (always-on Docker container, no cold start), Render free as fallback,
+plus the Vercel env vars. Same `backend/Dockerfile` works on both.
+
 ## Data notes
 
 - Rasters in `resources/` are EPSG:2271 (US survey feet), reprojected to

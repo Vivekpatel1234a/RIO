@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// Default to a relative (same-origin) base URL. The Next.js dev/prod server
+// rewrites /api/* and /storage/* to the FastAPI backend, so a single origin
+// — and a single tunnel link — reaches both tiers. Set NEXT_PUBLIC_API_URL
+// (e.g. the Railway URL) at build time to point directly at a public backend.
+const API_ORIGIN = process.env.NEXT_PUBLIC_API_URL || '';
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+  baseURL: API_ORIGIN,
 });
 
 export const loadDemo = () => api.post('/api/demo/load');
@@ -32,7 +37,9 @@ export const getGEEStatus = () => api.get('/api/gee/status');
 export const getExports = () => api.get('/api/exports');
 
 // ---- Real HEC-RAS flood raster pipeline (resources/ four files) ----
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Relative by default so image/video URLs also flow through the same-origin
+// rewrite; override with NEXT_PUBLIC_API_URL for a public backend.
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
 export const getFloodMeta = () => api.get('/api/flood/meta');
 export const floodStateImageUrl = (state: string) => `${API_BASE}/api/flood/state/${state}/image.png`;
 export const getFloodStateGrid = (state: string) => api.get(`/api/flood/state/${state}/grid`);

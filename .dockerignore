@@ -1,0 +1,14 @@
+# Keeps the Docker build context small (repo root is the build context).
+.git
+.workbuddy-ai
+.dist
+**/node_modules
+**/.next
+**/__pycache__
+**/*.log
+backend.log
+frontend-dev.log
+recordings
+RIO-main/RIO-main/backend/storage/projects
+RIO-main/RIO-main/backend/storage/exports
+RIO-main/RIO-main/backend/storage/flood_cache
