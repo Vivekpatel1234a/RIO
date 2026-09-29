@@ -26,5 +26,5 @@ pyproj==3.6.1
 # xarray==2024.3.0
 
 # Try to install these; platform will work without them in mock mode
-rasterio
-geopandas
+#rasterio
+#geopandas
