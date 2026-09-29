@@ -1,0 +1,106 @@
+version: '3.9'
+
+services:
+  # ─────────────────────────────────────────────────────────
+  # PostgreSQL + PostGIS
+  # ─────────────────────────────────────────────────────────
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: hadr_postgres
+    environment:
+      POSTGRES_DB: hadr_flood
+      POSTGRES_USER: hadr
+      POSTGRES_PASSWORD: hadr_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hadr -d hadr_flood"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────
+  # Redis
+  # ─────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: hadr_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────
+  # FastAPI Backend
+  # ─────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hadr_backend
+    env_file: ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://hadr:hadr_password@postgres:5432/hadr_flood
+      REDIS_URL: redis://redis:6379/0
+      STORAGE_PATH: /app/storage
+      DEMO_DATA_PATH: /app/demo
+      CORS_ORIGINS: http://localhost:3000,http://frontend:3000
+    volumes:
+      - ./backend:/app
+      - ./demo:/app/demo
+      - storage_data:/app/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ─────────────────────────────────────────────────────────
+  # Celery Worker
+  # ─────────────────────────────────────────────────────────
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hadr_worker
+    env_file: ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://hadr:hadr_password@postgres:5432/hadr_flood
+      REDIS_URL: redis://redis:6379/0
+      STORAGE_PATH: /app/storage
+      DEMO_DATA_PATH: /app/demo
+    volumes:
+      - ./backend:/app
+      - ./demo:/app/demo
+      - storage_data:/app/storage
+    depends_on:
+      - backend
+      - redis
+    command: celery -A app.workers.celery_app worker --loglevel=info -c 2
+
+  # ─────────────────────────────────────────────────────────
+  # Next.js Frontend
+  # ─────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hadr_frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  storage_data:

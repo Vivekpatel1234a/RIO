@@ -1,0 +1,16 @@
+{
+  "model": "SPH",
+  "model_version": "mock-sph-1.0",
+  "is_mock": true,
+  "particle_method": "Smoothed Particle Hydrodynamics (Mock)",
+  "kernel": "Cubic Spline",
+  "particle_spacing_m": 30.0,
+  "smoothing_length_m": 60.0,
+  "time_step_s": 10.0,
+  "gravity_ms2": 9.81,
+  "kinematic_viscosity_m2s": 1e-06,
+  "boundary_type": "open_downstream",
+  "simulation_duration_hrs": 24.0,
+  "output_interval_s": 3600.0,
+  "disclaimer": "MOCK SPH \u2014 DEMONSTRATION ONLY"
+}
