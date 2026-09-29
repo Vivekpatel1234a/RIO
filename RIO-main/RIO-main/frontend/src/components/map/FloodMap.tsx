@@ -37,7 +37,7 @@ export default function FloodMap(props: FloodMapProps) {
           sources: {
             'carto': {
               type: 'raster',
-              tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
+              tiles: ['https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_429m_1_f0a4ee7cc024ded1d212ce0e'],
               tileSize: 256,
               attribution: '&copy; CartoDB &copy; OpenStreetMap',
             }
