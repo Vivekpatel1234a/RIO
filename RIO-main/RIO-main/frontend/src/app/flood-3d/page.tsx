@@ -6,8 +6,8 @@ const FloodTerrainViewer = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center h-full bg-slate-950">
-        <div className="text-cyan-400 animate-pulse text-sm">Loading 3D viewer…</div>
+      <div className="flex items-center justify-center h-full bg-white">
+        <div className="text-orange-400 animate-pulse text-sm">Loading 3D viewer…</div>
       </div>
     ),
   },

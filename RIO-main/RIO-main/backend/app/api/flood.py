@@ -3,13 +3,73 @@
 All values originate from the four files in resources/ (EPSG:2271, US survey
 feet). Depths/WSE are converted to metres and reprojected to EPSG:4326 for
 map alignment. Nothing here is synthetic.
+
+Also serves the user's real HEC-RAS screen recordings from recordings/ as an
+alternative video view of the same simulation.
 """
+import os
+from pathlib import Path
+from typing import Optional
+
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
 from ..services.flood import flood_pipeline
 
 router = APIRouter()
+
+VIDEO_EXTS = {".mp4", ".webm", ".mov", ".mkv", ".m4v"}
+VIDEO_MIME = {
+    ".mp4": "video/mp4", ".m4v": "video/mp4", ".webm": "video/webm",
+    ".mov": "video/quicktime", ".mkv": "video/x-matroska",
+}
+
+
+def _recordings_dir() -> Optional[Path]:
+    """Env var wins; otherwise the `recordings/` folder next to `resources/`."""
+    env = os.environ.get("FLOOD_RECORDINGS_DIR")
+    if env and Path(env).is_dir():
+        return Path(env)
+    rd = flood_pipeline.raster_dir
+    if rd:
+        cand = rd.parent / "recordings"
+        if cand.is_dir():
+            return cand
+    return None
+
+
+@router.get("/videos")
+async def list_videos():
+    """Auto-discover video files in recordings/ — new files appear on reload."""
+    d = _recordings_dir()
+    videos = []
+    if d:
+        for p in sorted(d.iterdir(), key=lambda x: x.stat().st_mtime):
+            if p.is_file() and p.suffix.lower() in VIDEO_EXTS:
+                videos.append({
+                    "name": p.name,
+                    "size_mb": round(p.stat().st_size / 1e6, 1),
+                    "url": f"/api/flood/videos/file/{p.name}",
+                })
+    return {
+        "recordings_dir": str(d) if d else None,
+        "videos": videos,
+        "note": "Drop .mp4/.webm files into this folder — they appear here automatically.",
+    }
+
+
+@router.get("/videos/file/{filename:path}")
+async def stream_video(filename: str):
+    d = _recordings_dir()
+    if not d:
+        raise HTTPException(status_code=404, detail="recordings/ folder not found")
+    path = (d / filename).resolve()
+    base = d.resolve()
+    if path != base and base not in path.parents:
+        raise HTTPException(status_code=403, detail="path outside recordings/")
+    if not path.is_file() or path.suffix.lower() not in VIDEO_EXTS:
+        raise HTTPException(status_code=404, detail="video not found")
+    return FileResponse(str(path), media_type=VIDEO_MIME[path.suffix.lower()])
 
 
 @router.get("/meta")

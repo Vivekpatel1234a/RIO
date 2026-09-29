@@ -7,7 +7,6 @@ import {
   ChevronRight, Waves
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getSimulations } from '@/lib/api';
 import { MOCK_SIMULATIONS, type MockSimulation } from '@/lib/mockData';
@@ -38,11 +37,11 @@ function StatusBadge({ status }: { status: string }) {
   const cfg = STATUS_CONFIG[status] || { label: status, color: 'secondary', icon: null };
   return (
     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-semibold border
-      ${cfg.color === 'success' ? 'bg-green-500/15 text-green-400 border-green-500/30' :
-        cfg.color === 'destructive' ? 'bg-red-500/15 text-red-400 border-red-500/30' :
-        cfg.color === 'warning' ? 'bg-amber-500/15 text-amber-400 border-amber-500/30' :
-        cfg.color === 'default' ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30' :
-        'bg-slate-700 text-slate-300 border-slate-600'}`}>
+      ${cfg.color === 'success' ? 'bg-green-500/15 text-green-600 border-green-500/30' :
+        cfg.color === 'destructive' ? 'bg-red-500/15 text-red-600 border-red-500/30' :
+        cfg.color === 'warning' ? 'bg-amber-500/15 text-amber-700 border-amber-500/30' :
+        cfg.color === 'default' ? 'bg-orange-500/15 text-orange-400 border-orange-500/30' :
+        'bg-orange-200 text-slate-600 border-orange-200'}`}>
       {cfg.icon}{cfg.label}
     </span>
   );
@@ -64,7 +63,7 @@ export default function SimulationsPage() {
             sims.map((s: Record<string, unknown>) => ({
               id: s.simulation_id,
               name: `Simulation ${String(s.simulation_id).slice(0, 8)}`,
-              project: 'HADR Project',
+              project: 'RIO',
               river: 'Demo Himalayan Tributary',
               dam: 'Demo Himalayan Reservoir Dam',
               scenario: 'DAM_BREAK',
@@ -99,11 +98,11 @@ export default function SimulationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <BarChart2 className="h-6 w-6 text-cyan-400" />
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+            <BarChart2 className="h-6 w-6 text-orange-400" />
             Simulations
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Manage dam-break, flash-flood, and river-blockage simulations.
           </p>
         </div>
@@ -127,17 +126,17 @@ export default function SimulationsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total', value: stats.total, icon: <BarChart2 className="h-5 w-5 text-slate-400" /> },
-          { label: 'Completed', value: stats.completed, icon: <CheckCircle className="h-5 w-5 text-green-400" /> },
-          { label: 'Running', value: stats.running, icon: <Loader2 className={`h-5 w-5 text-cyan-400 ${stats.running > 0 ? 'animate-spin' : ''}`} /> },
-          { label: 'Failed', value: stats.failed, icon: <XCircle className="h-5 w-5 text-red-400" /> },
+          { label: 'Total', value: stats.total, icon: <BarChart2 className="h-5 w-5 text-slate-500" /> },
+          { label: 'Completed', value: stats.completed, icon: <CheckCircle className="h-5 w-5 text-green-600" /> },
+          { label: 'Running', value: stats.running, icon: <Loader2 className={`h-5 w-5 text-orange-400 ${stats.running > 0 ? 'animate-spin' : ''}`} /> },
+          { label: 'Failed', value: stats.failed, icon: <XCircle className="h-5 w-5 text-red-600" /> },
         ].map(stat => (
           <Card key={stat.label}>
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-slate-400">{stat.label}</p>
-                  <p className="text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-xs text-slate-500">{stat.label}</p>
+                  <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
                 </div>
                 {stat.icon}
               </div>
@@ -148,13 +147,13 @@ export default function SimulationsPage() {
 
       {/* Filter tabs */}
       <div className="flex items-center gap-2 flex-wrap">
-        <Filter className="h-4 w-4 text-slate-400" />
+        <Filter className="h-4 w-4 text-slate-500" />
         {['ALL', 'COMPLETED', 'RUNNING', 'FAILED', 'CREATED'].map(f => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             className={`px-3 py-1 rounded-md text-xs font-medium transition-colors
-              ${filter === f ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+              ${filter === f ? 'bg-orange-600 text-slate-800' : 'bg-orange-100 text-slate-500 hover:text-slate-800'}`}
           >
             {f === 'ALL' ? 'All' : f.charAt(0) + f.slice(1).toLowerCase()}
           </button>
@@ -164,91 +163,88 @@ export default function SimulationsPage() {
       {/* Table */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 text-cyan-400 animate-spin" />
+          <Loader2 className="h-8 w-8 text-orange-400 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center py-20 text-center">
-            <Waves className="h-12 w-12 text-slate-600 mb-4" />
-            <p className="text-slate-400 mb-4">No simulations found.</p>
+            <Waves className="h-12 w-12 text-slate-500 mb-4" />
+            <p className="text-slate-500 mb-4">No simulations found.</p>
             <Link href="/simulations/new"><Button>Create New Simulation</Button></Link>
           </CardContent>
         </Card>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-slate-700">
+        <div className="overflow-x-auto rounded-lg border border-orange-200">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-700 bg-slate-900">
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Name</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium hidden md:table-cell">Scenario</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium hidden lg:table-cell">Model</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Status</th>
-                <th className="text-right px-4 py-3 text-slate-400 font-medium hidden md:table-cell">Area (km²)</th>
-                <th className="text-right px-4 py-3 text-slate-400 font-medium hidden lg:table-cell">Max Depth</th>
-                <th className="text-right px-4 py-3 text-slate-400 font-medium hidden lg:table-cell">Affected Pop.</th>
-                <th className="text-right px-4 py-3 text-slate-400 font-medium">Actions</th>
+              <tr className="border-b border-orange-200 bg-orange-50">
+                <th className="text-left px-4 py-3 text-slate-500 font-medium">Name</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium hidden md:table-cell">Scenario</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium hidden lg:table-cell">Model</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium">Status</th>
+                <th className="text-right px-4 py-3 text-slate-500 font-medium hidden md:table-cell">Area (km²)</th>
+                <th className="text-right px-4 py-3 text-slate-500 font-medium hidden lg:table-cell">Max Depth</th>
+                <th className="text-right px-4 py-3 text-slate-500 font-medium hidden lg:table-cell">Affected Pop.</th>
+                <th className="text-right px-4 py-3 text-slate-500 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((sim, i) => (
-                <tr key={sim.id} className={`border-b border-slate-800 hover:bg-slate-800/50 transition-colors ${i % 2 === 0 ? 'bg-slate-900/50' : ''}`}>
+                <tr key={sim.id} className={`border-b border-orange-200 hover:bg-orange-100/50 transition-colors ${i % 2 === 0 ? 'bg-orange-50/50' : ''}`}>
                   <td className="px-4 py-3">
-                    <div className="font-medium text-white">{sim.name}</div>
+                    <div className="font-medium text-slate-800">{sim.name}</div>
                     <div className="text-xs text-slate-500">{sim.dam}</div>
-                    {sim.is_demo && <Badge variant="demo" className="mt-1 text-[10px]">DEMO</Badge>}
                   </td>
-                  <td className="px-4 py-3 hidden md:table-cell text-slate-300">
+                  <td className="px-4 py-3 hidden md:table-cell text-slate-600">
                     {SCENARIO_LABEL[sim.scenario] || sim.scenario}
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
-                    <span className="text-slate-300">{sim.model}</span>
-                    <Badge variant="mock" className="ml-2 text-[10px]">MOCK</Badge>
-                  </td>
+                    <span className="text-slate-600">{sim.model}</span>                  </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={sim.status} />
                   </td>
-                  <td className="px-4 py-3 text-right hidden md:table-cell text-slate-300 font-mono">
+                  <td className="px-4 py-3 text-right hidden md:table-cell text-slate-600 font-mono">
                     {sim.inundated_area_km2 > 0 ? sim.inundated_area_km2.toFixed(1) : '—'}
                   </td>
-                  <td className="px-4 py-3 text-right hidden lg:table-cell text-slate-300 font-mono">
+                  <td className="px-4 py-3 text-right hidden lg:table-cell text-slate-600 font-mono">
                     {sim.max_depth_m > 0 ? `${sim.max_depth_m.toFixed(1)} m` : '—'}
                   </td>
-                  <td className="px-4 py-3 text-right hidden lg:table-cell text-slate-300 font-mono">
+                  <td className="px-4 py-3 text-right hidden lg:table-cell text-slate-600 font-mono">
                     {sim.affected_population > 0 ? sim.affected_population.toLocaleString() : '—'}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
                       <Link href={`/simulations/${sim.id}`}>
-                        <button className="p-1.5 text-slate-400 hover:text-cyan-400 rounded" title="View">
+                        <button className="p-1.5 text-slate-500 hover:text-orange-400 rounded" title="View">
                           <Eye className="h-4 w-4" />
                         </button>
                       </Link>
                       {sim.status === 'COMPLETED' && (
                         <>
                           <Link href={`/simulations/${sim.id}/results`}>
-                            <button className="p-1.5 text-slate-400 hover:text-green-400 rounded" title="Results">
+                            <button className="p-1.5 text-slate-500 hover:text-green-600 rounded" title="Results">
                               <ChevronRight className="h-4 w-4" />
                             </button>
                           </Link>
                           <Link href={`/simulations/${sim.id}/comparison`}>
-                            <button className="p-1.5 text-slate-400 hover:text-violet-400 rounded" title="Compare">
+                            <button className="p-1.5 text-slate-500 hover:text-orange-400 rounded" title="Compare">
                               <BarChart2 className="h-4 w-4" />
                             </button>
                           </Link>
                           <Link href="/exports">
-                            <button className="p-1.5 text-slate-400 hover:text-blue-400 rounded" title="Export">
+                            <button className="p-1.5 text-slate-500 hover:text-blue-600 rounded" title="Export">
                               <Download className="h-4 w-4" />
                             </button>
                           </Link>
                         </>
                       )}
                       {sim.status === 'CREATED' && (
-                        <button className="p-1.5 text-slate-400 hover:text-cyan-400 rounded" title="Run">
+                        <button className="p-1.5 text-slate-500 hover:text-orange-400 rounded" title="Run">
                           <Play className="h-4 w-4" />
                         </button>
                       )}
                       {sim.status !== 'RUNNING' && (
-                        <button className="p-1.5 text-slate-400 hover:text-red-400 rounded" title="Delete">
+                        <button className="p-1.5 text-slate-500 hover:text-red-600 rounded" title="Delete">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       )}
@@ -262,7 +258,7 @@ export default function SimulationsPage() {
       )}
 
       {/* Demo note */}
-      <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
+      <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
         <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
         <span>
           <strong>DEMO DATA:</strong> Pre-populated simulations above use synthetic terrain, hydrology, and mock hydraulic models.

@@ -1,0 +1,7 @@
+Metric,Value,Unit,Model,Disclaimer
+Max Flood Depth,37.15678405761719,m,MOCK SPH,DEMO
+Avg Flood Depth,8.223662376403809,m,MOCK SPH,DEMO
+Max Velocity,16.132169723510742,m/s,MOCK SPH,DEMO
+Inundation Area,239.6039062499969,km²,MOCK SPH,DEMO
+Peak Discharge,7050.0,m³/s,MOCK SPH,DEMO
+First Arrival Time,0.02470039576292038,hrs,MOCK SPH,DEMO

@@ -6,8 +6,8 @@ const variants = {
   destructive: 'bg-red-500/15 text-red-500 border-red-500/30',
   success: 'bg-green-500/15 text-green-600 border-green-500/30',
   warning: 'bg-amber-500/15 text-amber-600 border-amber-500/30',
-  mock: 'bg-violet-500/15 text-violet-600 border-violet-500/30',
-  demo: 'bg-cyan-500/15 text-cyan-600 border-cyan-500/30',
+  mock: 'bg-orange-500/15 text-orange-600 border-orange-500/30',
+  demo: 'bg-orange-500/15 text-orange-600 border-orange-500/30',
   outline: 'bg-transparent border text-foreground',
 };
 export function Badge({ children, variant='default', className }: { children: React.ReactNode; variant?: keyof typeof variants; className?: string }) {

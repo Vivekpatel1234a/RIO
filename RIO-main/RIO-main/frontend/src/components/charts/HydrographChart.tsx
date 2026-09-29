@@ -3,15 +3,15 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, L
 import type { HydrologyPoint } from '@/types';
 
 export default function HydrographChart({ data }: { data: HydrologyPoint[] }) {
-  if (!data?.length) return <div className="text-slate-400 text-center py-8">No hydrological data</div>;
+  if (!data?.length) return <div className="text-slate-500 text-center py-8">No hydrological data</div>;
   const maxQ = Math.max(...data.map(d => d.discharge_m3s));
   const breachHour = data.find(d => d.stage === 'BREACH_START')?.hour;
   const peakHour = data.find(d => d.stage === 'PEAK')?.hour;
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-slate-300">Discharge Hydrograph</h3>
-        <span className="text-xs text-amber-400 bg-amber-900/30 px-2 py-0.5 rounded">SYNTHETIC DATA — DEMO</span>
+        <h3 className="text-sm font-medium text-slate-600">Discharge Hydrograph</h3>
+        <span className="text-xs text-amber-700 bg-amber-50 px-2 py-0.5 rounded">SYNTHETIC DATA — DEMO</span>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <LineChart data={data} margin={{top:5,right:20,left:10,bottom:5}}>

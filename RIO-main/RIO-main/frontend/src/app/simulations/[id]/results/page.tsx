@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, AlertCircle, Waves } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { FloodResultCard } from '@/components/results/FloodResultCard';
 import { ImpactCard } from '@/components/results/ImpactCard';
@@ -67,22 +66,19 @@ export default function ResultsPage() {
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link href={`/simulations/${id}`}>
-          <button className="p-2 text-slate-400 hover:text-white rounded-md hover:bg-slate-800">
+          <button className="p-2 text-slate-500 hover:text-slate-800 rounded-md hover:bg-orange-100">
             <ArrowLeft className="h-5 w-5" />
           </button>
         </Link>
         <div>
-          <h1 className="text-xl font-bold text-white">Simulation Results</h1>
+          <h1 className="text-xl font-bold text-slate-800">Simulation Results</h1>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs text-slate-500">{id.slice(0, 12)}...</span>
-            <Badge variant="mock">MOCK MODELS</Badge>
-            <Badge variant="demo">DEMO DATA</Badge>
-          </div>
+            <span className="text-xs text-slate-500">{id.slice(0, 12)}...</span>          </div>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
+      <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
         <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
         <span>Results shown are from MOCK SPH and MOCK Delft3D implementations using synthetic data. Not real flood modelling outputs. Do not use for any real-world decisions.</span>
       </div>
@@ -90,14 +86,14 @@ export default function ResultsPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'SPH Inundation', value: `${sphResult.inundation_area_km2} km²`, sub: 'MOCK', color: 'violet' },
+          { label: 'SPH Inundation', value: `${sphResult.inundation_area_km2} km²`, sub: 'MOCK', color: 'orange' },
           { label: 'D3D Inundation', value: `${d3dResult.inundation_area_km2} km²`, sub: 'MOCK', color: 'blue' },
-          { label: 'Peak Discharge', value: `${sphResult.peak_discharge_m3s.toLocaleString()} m³/s`, sub: 'Both models', color: 'cyan' },
+          { label: 'Peak Discharge', value: `${sphResult.peak_discharge_m3s.toLocaleString()} m³/s`, sub: 'Both models', color: 'orange' },
           { label: 'Affected Population', value: sphImpact.affected_population.toLocaleString(), sub: 'SPH estimate', color: 'amber' },
         ].map(card => (
           <Card key={card.label} className={`border-${card.color}-700/30`}>
             <CardContent className="pt-4">
-              <p className="text-xs text-slate-400">{card.label}</p>
+              <p className="text-xs text-slate-500">{card.label}</p>
               <p className={`text-2xl font-bold text-${card.color}-400 mt-1`}>{card.value}</p>
               <p className="text-xs text-slate-500 mt-1">{card.sub}</p>
             </CardContent>
@@ -106,11 +102,11 @@ export default function ResultsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-800 overflow-x-auto">
+      <div className="flex gap-1 border-b border-orange-200 overflow-x-auto">
         {TABS.map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px ${
-              tab === t ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'
+              tab === t ? 'border-orange-500 text-orange-400' : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}>
             {t}
           </button>
@@ -137,8 +133,8 @@ export default function ResultsPage() {
             ].map(m => (
               <Card key={m.label}>
                 <CardContent className="pt-4">
-                  <p className="text-xs text-slate-400">{m.label}</p>
-                  <p className="text-xl font-bold text-white mt-1">{m.value}</p>
+                  <p className="text-xs text-slate-500">{m.label}</p>
+                  <p className="text-xl font-bold text-slate-800 mt-1">{m.value}</p>
                   <p className="text-xs text-slate-500">{m.sub}</p>
                 </CardContent>
               </Card>
@@ -165,8 +161,8 @@ export default function ResultsPage() {
                   ['Cd', '0.577 (rectangular breach)'],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between">
-                    <dt className="text-slate-400">{k}</dt>
-                    <dd className="text-white font-mono text-right">{v}</dd>
+                    <dt className="text-slate-500">{k}</dt>
+                    <dd className="text-slate-800 font-mono text-right">{v}</dd>
                   </div>
                 ))}
               </dl>
@@ -188,13 +184,11 @@ export default function ResultsPage() {
                   ['Hydropower', '120 MW'],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between">
-                    <dt className="text-slate-400">{k}</dt>
-                    <dd className="text-white text-right">{v}</dd>
+                    <dt className="text-slate-500">{k}</dt>
+                    <dd className="text-slate-800 text-right">{v}</dd>
                   </div>
                 ))}
-              </dl>
-              <Badge variant="demo" className="mt-3">SYNTHETIC DATA</Badge>
-            </CardContent>
+              </dl>            </CardContent>
           </Card>
         </div>
       )}
@@ -233,7 +227,7 @@ export default function ResultsPage() {
             <ImpactCard impact={sphImpact} model="SPH" />
             <ImpactCard impact={d3dImpact} model="Delft3D" />
           </div>
-          <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
+          <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
             PRELIMINARY DEMONSTRATION ESTIMATE — Based on synthetic settlements, roads and infrastructure. Not for real emergency decisions.
           </div>
@@ -250,27 +244,27 @@ export default function ResultsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-700">
-                    <th className="text-left py-2 pr-4 text-slate-400">File</th>
-                    <th className="text-left py-2 pr-4 text-slate-400">Format</th>
-                    <th className="text-right py-2 text-slate-400">Action</th>
+                  <tr className="border-b border-orange-200">
+                    <th className="text-left py-2 pr-4 text-slate-500">File</th>
+                    <th className="text-left py-2 pr-4 text-slate-500">Format</th>
+                    <th className="text-right py-2 text-slate-500">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {exports.map((e, i) => (
-                    <tr key={i} className="border-b border-slate-800 hover:bg-slate-800/50">
-                      <td className="py-2 pr-4 text-slate-300">{e.label}</td>
+                    <tr key={i} className="border-b border-orange-200 hover:bg-orange-100/50">
+                      <td className="py-2 pr-4 text-slate-600">{e.label}</td>
                       <td className="py-2 pr-4">
-                        <span className="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400">{e.fmt}</span>
+                        <span className="px-2 py-0.5 rounded text-xs bg-orange-100 text-slate-500">{e.fmt}</span>
                       </td>
                       <td className="py-2 text-right">
                         {e.path ? (
                           <a href={`${API_BASE}/api/exports/download?path=${encodeURIComponent(e.path)}`}
-                            className="text-cyan-400 hover:text-cyan-300 text-xs" download>
+                            className="text-orange-400 hover:text-orange-600 text-xs" download>
                             ↓ Download
                           </a>
                         ) : (
-                          <span className="text-slate-600 text-xs">Backend required</span>
+                          <span className="text-slate-500 text-xs">Backend required</span>
                         )}
                       </td>
                     </tr>

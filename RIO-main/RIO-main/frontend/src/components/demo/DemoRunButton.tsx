@@ -67,32 +67,32 @@ export default function DemoRunButton() {
   return (
     <div className="space-y-6">
       {!running && !isCompleted && !isFailed && (
-        <Button size="xl" className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold shadow-lg shadow-cyan-900/50" onClick={startDemo}>
+        <Button size="xl" className="bg-orange-600 hover:bg-orange-500 text-slate-800 font-bold shadow-lg shadow-orange-900/50" onClick={startDemo}>
           <Play className="h-6 w-6" fill="currentColor" />
           RUN FULL DEMO
         </Button>
       )}
 
       {error && (
-        <div className="flex items-center gap-2 text-red-400 text-sm">
+        <div className="flex items-center gap-2 text-red-600 text-sm">
           <XCircle className="h-4 w-4" />{error}
           <Button size="sm" variant="outline" onClick={startDemo}>Retry</Button>
         </div>
       )}
 
       {(running || isCompleted || isFailed) && status && (
-        <div className="bg-slate-900 rounded-xl border border-slate-700 p-6 space-y-4">
+        <div className="bg-orange-50 rounded-xl border border-orange-200 p-6 space-y-4">
           {/* Overall progress */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-300 font-medium">
+              <span className="text-slate-600 font-medium">
                 {isCompleted ? 'Pipeline Complete' : isFailed ? 'Pipeline Failed' : `Running: ${status.current_stage}`}
               </span>
-              <span className="text-cyan-400 font-mono">{Math.round(progress * 100)}%</span>
+              <span className="text-orange-400 font-mono">{Math.round(progress * 100)}%</span>
             </div>
-            <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-2 bg-orange-100 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-500 ${isCompleted ? 'bg-green-500' : isFailed ? 'bg-red-500' : 'bg-cyan-500'}`}
+                className={`h-full rounded-full transition-all duration-500 ${isCompleted ? 'bg-green-500' : isFailed ? 'bg-red-500' : 'bg-orange-500'}`}
                 style={{width: `${Math.round(progress*100)}%`}}
               />
             </div>
@@ -103,13 +103,13 @@ export default function DemoRunButton() {
             {status.stages.map((stage, i) => (
               <div key={i} className="flex items-center gap-3 text-sm">
                 {stage.done ? (
-                  <CheckCircle className="h-4 w-4 text-green-400 shrink-0" />
+                  <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />
                 ) : stage.stage_id === status.current_stage ? (
-                  <Loader2 className="h-4 w-4 text-cyan-400 animate-spin shrink-0" />
+                  <Loader2 className="h-4 w-4 text-orange-400 animate-spin shrink-0" />
                 ) : (
-                  <div className="h-4 w-4 rounded-full border border-slate-600 shrink-0" />
+                  <div className="h-4 w-4 rounded-full border border-orange-200 shrink-0" />
                 )}
-                <span className={stage.done ? 'text-slate-300' : stage.stage_id === status.current_stage ? 'text-cyan-400' : 'text-slate-500'}>
+                <span className={stage.done ? 'text-slate-600' : stage.stage_id === status.current_stage ? 'text-orange-400' : 'text-slate-500'}>
                   {STAGE_LABELS[stage.stage_id] || stage.message}
                 </span>
                 {stage.done && <span className="ml-auto text-xs text-slate-500">{new Date(stage.timestamp).toLocaleTimeString()}</span>}

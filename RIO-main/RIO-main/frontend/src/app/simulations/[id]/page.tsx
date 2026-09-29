@@ -7,7 +7,6 @@ import {
   ArrowLeft, AlertCircle, Clock, MapPin, Cpu, Sliders
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PipelineProgress } from '@/components/pipeline/PipelineProgress';
 import { getSimulation, runSimulation } from '@/lib/api';
@@ -65,16 +64,19 @@ export default function SimulationDetailPage() {
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link href="/simulations">
-          <button className="p-2 text-slate-400 hover:text-white rounded-md hover:bg-slate-800">
+          <button className="p-2 text-slate-500 hover:text-slate-800 rounded-md hover:bg-orange-100">
             <ArrowLeft className="h-5 w-5" />
           </button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-xl font-bold text-white">{mockSim.name}</h1>
+          <h1 className="text-xl font-bold text-slate-800">{mockSim.name}</h1>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-xs text-slate-500">{id.slice(0, 12)}...</span>
-            {isDemo && <Badge variant="demo">DEMO</Badge>}
-            <Badge variant="mock">MOCK MODELS</Badge>
+            {isDemo && (
+              <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+                Demo
+              </span>
+            )}
           </div>
         </div>
         <div className="flex gap-2">
@@ -103,7 +105,7 @@ export default function SimulationDetailPage() {
 
       {/* Status banner */}
       {currentStatus === 'COMPLETED' && (
-        <div className="flex items-center gap-3 bg-green-900/30 border border-green-700/40 rounded-lg px-4 py-3 text-sm text-green-400">
+        <div className="flex items-center gap-3 bg-green-900/30 border border-green-200 rounded-lg px-4 py-3 text-sm text-green-600">
           <AlertCircle className="h-4 w-4 shrink-0" />
           Simulation completed successfully. Both mock SPH and mock Delft3D results are available.
           <Link href={`/simulations/${id}/results`} className="ml-auto underline hover:no-underline">
@@ -123,10 +125,10 @@ export default function SimulationDetailPage() {
               <dl className="space-y-2">
                 {paramRows.map(r => (
                   <div key={r.label} className="flex justify-between gap-2 text-sm">
-                    <dt className="text-slate-400 flex items-center gap-1">
+                    <dt className="text-slate-500 flex items-center gap-1">
                       {r.icon}{r.label}
                     </dt>
-                    <dd className="text-slate-200 font-medium text-right">{r.value}</dd>
+                    <dd className="text-slate-700 font-medium text-right">{r.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -140,16 +142,14 @@ export default function SimulationDetailPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               {[
-                { name: 'SPH', full: 'Smooth Particle Hydrodynamics', color: 'violet' },
+                { name: 'SPH', full: 'Smooth Particle Hydrodynamics', color: 'orange' },
                 { name: 'Delft3D', full: 'Delft3D-FLOW', color: 'blue' },
               ].map(m => (
-                <div key={m.name} className="flex items-center justify-between bg-slate-800 rounded-lg px-3 py-2">
+                <div key={m.name} className="flex items-center justify-between bg-orange-100 rounded-lg px-3 py-2">
                   <div>
-                    <div className="text-sm font-medium text-white">{m.name}</div>
+                    <div className="text-sm font-medium text-slate-800">{m.name}</div>
                     <div className="text-xs text-slate-500">{m.full}</div>
-                  </div>
-                  <Badge variant="mock">MOCK</Badge>
-                </div>
+                  </div>                </div>
               ))}
             </CardContent>
           </Card>
@@ -170,13 +170,13 @@ export default function SimulationDetailPage() {
                     <div key={r.label}>
                       <div className="text-xs text-slate-500 mb-1">{r.label}</div>
                       <div className="flex gap-2">
-                        <span className="flex-1 text-center bg-violet-900/30 text-violet-300 rounded px-2 py-1 text-xs">{r.sph}</span>
-                        <span className="flex-1 text-center bg-blue-900/30 text-blue-300 rounded px-2 py-1 text-xs">{r.d3d}</span>
+                        <span className="flex-1 text-center bg-orange-900/30 text-orange-600 rounded px-2 py-1 text-xs">{r.sph}</span>
+                        <span className="flex-1 text-center bg-blue-900/30 text-blue-700 rounded px-2 py-1 text-xs">{r.d3d}</span>
                       </div>
                     </div>
                   ))}
                   <div className="flex gap-2 text-[10px] text-center">
-                    <span className="flex-1 text-violet-500">SPH</span>
+                    <span className="flex-1 text-orange-500">SPH</span>
                     <span className="flex-1 text-blue-500">Delft3D</span>
                   </div>
                 </div>

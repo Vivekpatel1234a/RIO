@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {
   ArrowLeft, AlertCircle, Info, TrendingUp, TrendingDown, Minus
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import ComparisonTable from '@/components/results/ComparisonTable';
 import HydrographChart from '@/components/charts/HydrographChart';
@@ -46,31 +45,27 @@ export default function ComparisonPage() {
   ];
 
   const DiffIcon = ({ val }: { val: number }) =>
-    val > 0 ? <TrendingUp className="h-3.5 w-3.5 text-red-400" /> :
-    val < 0 ? <TrendingDown className="h-3.5 w-3.5 text-green-400" /> :
-    <Minus className="h-3.5 w-3.5 text-slate-400" />;
+    val > 0 ? <TrendingUp className="h-3.5 w-3.5 text-red-600" /> :
+    val < 0 ? <TrendingDown className="h-3.5 w-3.5 text-green-600" /> :
+    <Minus className="h-3.5 w-3.5 text-slate-500" />;
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link href={`/simulations/${id}`}>
-          <button className="p-2 text-slate-400 hover:text-white rounded-md hover:bg-slate-800">
+          <button className="p-2 text-slate-500 hover:text-slate-800 rounded-md hover:bg-orange-100">
             <ArrowLeft className="h-5 w-5" />
           </button>
         </Link>
         <div>
-          <h1 className="text-xl font-bold text-white">Model Comparison</h1>
-          <div className="flex items-center gap-2 mt-1">
-            <Badge variant="mock">MOCK SPH</Badge>
-            <span className="text-slate-600 text-sm">vs</span>
-            <Badge variant="mock">MOCK DELFT3D</Badge>
-          </div>
+          <h1 className="text-xl font-bold text-slate-800">Model Comparison</h1>
+          <div className="flex items-center gap-2 mt-1">            <span className="text-slate-500 text-sm">vs</span>          </div>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
+      <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
         <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
         <span>
           <strong>DEMO / MOCK MODEL OUTPUT.</strong> Neither SPH nor Delft3D real solvers are installed.
@@ -84,7 +79,7 @@ export default function ComparisonPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {[
           {
-            name: 'SPH (Mock)', color: 'violet',
+            name: 'SPH (Mock)', color: 'orange',
             desc: 'Smooth Particle Hydrodynamics — Lagrangian particle-based approach. Sharper flood front, narrower lateral spread.',
             params: 'Decay=0.55 | Velocity coef=0.85 | Wave speed=8.5 m/s',
             area: MOCK_SPH_RESULT.inundation_area_km2, depth: MOCK_SPH_RESULT.max_depth_m,
@@ -101,9 +96,7 @@ export default function ComparisonPage() {
           <Card key={m.name} className={`border-${m.color}-700/40`}>
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <CardTitle className={`text-${m.color}-300`}>{m.name}</CardTitle>
-                <Badge variant="mock">MOCK</Badge>
-              </div>
+                <CardTitle className={`text-${m.color}-300`}>{m.name}</CardTitle>              </div>
               <CardDescription>{m.desc}</CardDescription>
               <p className={`text-[11px] font-mono text-${m.color}-500/80 mt-1`}>{m.params}</p>
             </CardHeader>
@@ -115,9 +108,9 @@ export default function ComparisonPage() {
                   { label: 'Max Velocity', value: `${m.vel} m/s` },
                   { label: 'Arrival Time', value: `${m.arr} hrs` },
                 ].map(stat => (
-                  <div key={stat.label} className="bg-slate-800 rounded-lg p-3">
+                  <div key={stat.label} className="bg-orange-100 rounded-lg p-3">
                     <div className={`text-xs text-${m.color}-400`}>{stat.label}</div>
-                    <div className="text-lg font-bold text-white">{stat.value}</div>
+                    <div className="text-lg font-bold text-slate-800">{stat.value}</div>
                   </div>
                 ))}
               </div>
@@ -198,12 +191,12 @@ export default function ComparisonPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5 text-cyan-400" />
+            <Info className="h-5 w-5 text-orange-400" />
             Spatial Difference Analysis
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-start gap-2 text-sm text-slate-400 bg-slate-800 rounded-lg p-4">
+          <div className="flex items-start gap-2 text-sm text-slate-500 bg-orange-100 rounded-lg p-4">
             <span>
               In a full deployment with real solvers, this section would show difference raster maps for
               flood depth, velocity, and arrival time between SPH and Delft3D outputs (overlaid on the GIS map).
@@ -217,13 +210,13 @@ export default function ComparisonPage() {
               { label: 'Inundation Difference', sph: '42.5 km²', d3d: '44.1 km²', diff: '+1.6 km²', icon: <DiffIcon val={1.6} /> },
               { label: 'Arrival Time Difference', sph: '0.38 hrs', d3d: '0.41 hrs', diff: '+0.03 hrs', icon: <DiffIcon val={0.03} /> },
             ].map(d => (
-              <div key={d.label} className="bg-slate-800 rounded-lg p-4 space-y-2">
-                <div className="text-xs text-slate-400 font-medium">{d.label}</div>
+              <div key={d.label} className="bg-orange-100 rounded-lg p-4 space-y-2">
+                <div className="text-xs text-slate-500 font-medium">{d.label}</div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-violet-400">SPH: {d.sph}</span>
-                  <span className="text-blue-400">D3D: {d.d3d}</span>
+                  <span className="text-orange-400">SPH: {d.sph}</span>
+                  <span className="text-blue-600">D3D: {d.d3d}</span>
                 </div>
-                <div className="flex items-center gap-1 text-sm font-bold text-white">
+                <div className="flex items-center gap-1 text-sm font-bold text-slate-800">
                   {d.icon} {d.diff}
                 </div>
               </div>
@@ -235,8 +228,8 @@ export default function ComparisonPage() {
       {/* Footer note */}
       <div className="flex items-center gap-2 text-xs text-slate-500">
         <Info className="h-4 w-4" />
-        To connect real Delft3D: set <code className="bg-slate-800 px-1 rounded">DELFT3D_EXECUTABLE</code> in backend/.env.
-        To connect real SPH: set <code className="bg-slate-800 px-1 rounded">SPH_EXECUTABLE</code>.
+        To connect real Delft3D: set <code className="bg-orange-100 px-1 rounded">DELFT3D_EXECUTABLE</code> in backend/.env.
+        To connect real SPH: set <code className="bg-orange-100 px-1 rounded">SPH_EXECUTABLE</code>.
       </div>
     </div>
   );

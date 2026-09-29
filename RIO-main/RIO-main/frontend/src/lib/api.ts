@@ -36,3 +36,5 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 export const getFloodMeta = () => api.get('/api/flood/meta');
 export const floodStateImageUrl = (state: string) => `${API_BASE}/api/flood/state/${state}/image.png`;
 export const getFloodStateGrid = (state: string) => api.get(`/api/flood/state/${state}/grid`);
+export const getFloodVideos = () => api.get('/api/flood/videos');
+export const floodVideoUrl = (name: string) => `${API_BASE}/api/flood/videos/file/${encodeURIComponent(name)}`;

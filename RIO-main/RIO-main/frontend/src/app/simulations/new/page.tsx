@@ -33,14 +33,14 @@ function StepIndicator({ step, current }: { step: typeof STEPS[0]; current: numb
   return (
     <div className="flex flex-col items-center gap-1">
       <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors ${
-        done ? 'bg-cyan-600 border-cyan-600' :
-        active ? 'border-cyan-500 bg-cyan-900/40' :
-        'border-slate-700 bg-slate-900'
+        done ? 'bg-orange-600 border-orange-600' :
+        active ? 'border-orange-500 bg-orange-100' :
+        'border-orange-200 bg-orange-50'
       }`}>
-        {done ? <CheckCircle className="h-4 w-4 text-white" /> :
-         <step.icon className={`h-4 w-4 ${active ? 'text-cyan-400' : 'text-slate-500'}`} />}
+        {done ? <CheckCircle className="h-4 w-4 text-slate-800" /> :
+         <step.icon className={`h-4 w-4 ${active ? 'text-orange-400' : 'text-slate-500'}`} />}
       </div>
-      <span className={`text-[10px] font-medium hidden sm:block ${active ? 'text-cyan-400' : done ? 'text-slate-300' : 'text-slate-600'}`}>
+      <span className={`text-[10px] font-medium hidden sm:block ${active ? 'text-orange-400' : done ? 'text-slate-600' : 'text-slate-500'}`}>
         {step.label}
       </span>
     </div>
@@ -53,14 +53,14 @@ function InputField({ label, type = 'text', value, onChange, unit = '', hint = '
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-xs font-medium text-slate-300">{label}</label>
+      <label className="text-xs font-medium text-slate-600">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           min={min} max={max} step={step}
-          className="flex-1 h-9 px-3 rounded-md bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500"
+          className="flex-1 h-9 px-3 rounded-md bg-orange-100 border border-orange-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500"
         />
         {unit && <span className="text-slate-500 text-xs shrink-0">{unit}</span>}
       </div>
@@ -142,13 +142,13 @@ export default function NewSimulationPage() {
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">New Simulation</h1>
-        <p className="text-slate-400 text-sm mt-1">Configure and run a flood simulation using mock or real solver backends.</p>
+        <h1 className="text-2xl font-bold text-slate-800">New Simulation</h1>
+        <p className="text-slate-500 text-sm mt-1">Configure and run a flood simulation using mock or real solver backends.</p>
       </div>
 
       {/* Step indicator */}
       <div className="flex items-start justify-between relative">
-        <div className="absolute top-4 left-0 right-0 h-0.5 bg-slate-800 z-0 mx-4" />
+        <div className="absolute top-4 left-0 right-0 h-0.5 bg-orange-100 z-0 mx-4" />
         {STEPS.map(s => <StepIndicator key={s.id} step={s} current={step} />)}
       </div>
 
@@ -156,7 +156,7 @@ export default function NewSimulationPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            {(() => { const S = STEPS[step - 1]; return <S.icon className="h-5 w-5 text-cyan-400" />; })()}
+            {(() => { const S = STEPS[step - 1]; return <S.icon className="h-5 w-5 text-orange-400" />; })()}
             Step {step} — {STEPS[step - 1].label}
           </CardTitle>
         </CardHeader>
@@ -172,7 +172,7 @@ export default function NewSimulationPage() {
                 <InputField label="Min Latitude" type="number" value={30.20} onChange={() => {}} unit="°N" hint="South boundary" />
                 <InputField label="Max Latitude" type="number" value={30.40} onChange={() => {}} unit="°N" hint="North boundary" />
               </div>
-              <div className="flex items-start gap-2 text-xs text-cyan-400 bg-cyan-900/20 border border-cyan-700/30 rounded-lg p-3">
+              <div className="flex items-start gap-2 text-xs text-orange-400 bg-orange-900/20 border border-orange-700/30 rounded-lg p-3">
                 <Waves className="h-4 w-4 shrink-0 mt-0.5" />
                 <span>Default coordinates are the synthetic Himalayan study area used in the demo (Uttarakhand-inspired, ~30.2–30.4°N, 79.8–80.1°E).</span>
               </div>
@@ -182,27 +182,23 @@ export default function NewSimulationPage() {
           {/* Step 2: Datasets */}
           {step === 2 && (
             <div className="space-y-4">
-              <div className="flex items-center gap-3 p-4 rounded-lg border border-cyan-700/50 bg-cyan-900/20 cursor-pointer"
+              <div className="flex items-center gap-3 p-4 rounded-lg border border-orange-300 bg-orange-900/20 cursor-pointer"
                 onClick={() => setUseDemo(true)}>
-                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${useDemo ? 'border-cyan-500 bg-cyan-500' : 'border-slate-600'}`}>
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${useDemo ? 'border-orange-500 bg-orange-500' : 'border-orange-200'}`}>
                   {useDemo && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
                 <div>
-                  <div className="font-medium text-white">Use Synthetic Demo Dataset</div>
-                  <div className="text-sm text-slate-400">Pre-generated DEM, river, dam, settlements and hydrology. No upload required.</div>
-                  <Badge variant="demo" className="mt-1">RECOMMENDED FOR DEMO</Badge>
-                </div>
+                  <div className="font-medium text-slate-800">Use Synthetic Demo Dataset</div>
+                  <div className="text-sm text-slate-500">Pre-generated DEM, river, dam, settlements and hydrology. No upload required.</div>                </div>
               </div>
-              <div className="flex items-center gap-3 p-4 rounded-lg border border-slate-700 bg-slate-900/50 cursor-pointer opacity-60"
+              <div className="flex items-center gap-3 p-4 rounded-lg border border-orange-200 bg-orange-50/50 cursor-pointer opacity-60"
                 onClick={() => setUseDemo(false)}>
-                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${!useDemo ? 'border-cyan-500 bg-cyan-500' : 'border-slate-600'}`}>
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${!useDemo ? 'border-orange-500 bg-orange-500' : 'border-orange-200'}`}>
                   {!useDemo && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
                 <div>
-                  <div className="font-medium text-white">Upload Custom Datasets</div>
-                  <div className="text-sm text-slate-400">Upload your own DEM (GeoTIFF), river (GeoJSON), dam parameters (JSON), and hydrology (CSV).</div>
-                  <Badge variant="secondary" className="mt-1">COMING IN PHASE 2</Badge>
-                </div>
+                  <div className="font-medium text-slate-800">Upload Custom Datasets</div>
+                  <div className="text-sm text-slate-500">Upload your own DEM (GeoTIFF), river (GeoJSON), dam parameters (JSON), and hydrology (CSV).</div>                </div>
               </div>
             </div>
           )}
@@ -213,20 +209,19 @@ export default function NewSimulationPage() {
               {SCENARIOS.map(sc => (
                 <div key={sc.id}
                   className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer transition-colors ${
-                    scenario === sc.id ? 'border-cyan-600 bg-cyan-900/30' : 'border-slate-700 bg-slate-900/50 hover:border-slate-600'
+                    scenario === sc.id ? 'border-orange-600 bg-orange-900/30' : 'border-orange-200 bg-orange-50/50 hover:border-orange-200'
                   }`}
                   onClick={() => setScenario(sc.id)}>
                   <div className={`mt-0.5 w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${
-                    scenario === sc.id ? 'border-cyan-500 bg-cyan-500' : 'border-slate-600'
+                    scenario === sc.id ? 'border-orange-500 bg-orange-500' : 'border-orange-200'
                   }`}>
                     {scenario === sc.id && <div className="w-2 h-2 bg-white rounded-full" />}
                   </div>
                   <div>
-                    <div className="font-medium text-white flex items-center gap-2">
+                    <div className="font-medium text-slate-800 flex items-center gap-2">
                       {sc.label}
-                      {sc.tag && <Badge variant="demo" className="text-[10px]">{sc.tag}</Badge>}
                     </div>
-                    <div className="text-sm text-slate-400 mt-0.5">{sc.desc}</div>
+                    <div className="text-sm text-slate-500 mt-0.5">{sc.desc}</div>
                   </div>
                 </div>
               ))}
@@ -238,10 +233,10 @@ export default function NewSimulationPage() {
             <div className="space-y-4">
               {/* Presets */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400">Quick Preset:</span>
+                <span className="text-xs text-slate-500">Quick Preset:</span>
                 {(Object.entries(PRESETS) as [keyof typeof PRESETS, typeof PRESETS[keyof typeof PRESETS]][]).map(([key, p]) => (
                   <button key={key} onClick={() => applyPreset(key)}
-                    className="px-3 py-1 text-xs rounded-md bg-slate-800 border border-slate-700 text-slate-300 hover:border-cyan-600 hover:text-cyan-400 transition-colors">
+                    className="px-3 py-1 text-xs rounded-md bg-orange-100 border border-orange-200 text-slate-600 hover:border-orange-600 hover:text-orange-400 transition-colors">
                     {p.label}
                   </button>
                 ))}
@@ -258,7 +253,7 @@ export default function NewSimulationPage() {
                 <InputField label="Timestep" type="number" value={params.simulation_timestep_s} onChange={v => setParam('simulation_timestep_s', v)} unit="s" />
                 <InputField label="Terrain Resolution" type="number" value={params.terrain_resolution_m} onChange={v => setParam('terrain_resolution_m', v)} unit="m" />
               </div>
-              <p className="text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded p-2">
+              <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded p-2">
                 Peak discharge is computed using the simplified rectangular breach formula: Q = Cd × Bw × √(2g) × h^1.5
               </p>
             </div>
@@ -267,34 +262,32 @@ export default function NewSimulationPage() {
           {/* Step 5: Models */}
           {step === 5 && (
             <div className="space-y-4">
-              <p className="text-sm text-slate-400">Select which hydraulic models to run. Both use mock (demonstration) implementations.</p>
+              <p className="text-sm text-slate-500">Select which hydraulic models to run. Both use mock (demonstration) implementations.</p>
               {[
-                { key: 'sph', state: useSPH, set: setUseSPH, name: 'SPH', full: 'Smooth Particle Hydrodynamics', desc: 'Lagrangian particle-based flood simulation. Sharper flood front, narrower spread.', color: 'violet' },
+                { key: 'sph', state: useSPH, set: setUseSPH, name: 'SPH', full: 'Smooth Particle Hydrodynamics', desc: 'Lagrangian particle-based flood simulation. Sharper flood front, narrower spread.', color: 'orange' },
                 { key: 'delft3d', state: useDelft3D, set: setUseDelft3D, name: 'Delft3D', full: 'Delft3D-FLOW', desc: 'Structured curvilinear grid hydrodynamic model. Broader diffusion, slightly larger extent.', color: 'blue' },
               ].map(m => (
                 <div key={m.key}
                   className={`flex items-start gap-4 p-4 rounded-lg border cursor-pointer transition-colors ${
-                    m.state ? `border-${m.color}-600/50 bg-${m.color}-900/20` : 'border-slate-700 bg-slate-900/50 hover:border-slate-600'
+                    m.state ? `border-${m.color}-600/50 bg-${m.color}-900/20` : 'border-orange-200 bg-orange-50/50 hover:border-orange-200'
                   }`}
                   onClick={() => m.set(!m.state)}>
                   <div className={`mt-0.5 w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${
-                    m.state ? 'border-cyan-500 bg-cyan-500' : 'border-slate-600'
+                    m.state ? 'border-orange-500 bg-orange-500' : 'border-orange-200'
                   }`}>
-                    {m.state && <CheckCircle className="h-3 w-3 text-white" />}
+                    {m.state && <CheckCircle className="h-3 w-3 text-slate-800" />}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-white">{m.name}</span>
-                      <span className="text-slate-500 text-sm">— {m.full}</span>
-                      <Badge variant="mock">MOCK</Badge>
-                    </div>
-                    <p className="text-sm text-slate-400 mt-1">{m.desc}</p>
-                    <p className="text-xs text-amber-400 mt-1">Adapter ready. Connect real solver by setting {m.name.toUpperCase()}_EXECUTABLE in .env</p>
+                      <span className="font-semibold text-slate-800">{m.name}</span>
+                      <span className="text-slate-500 text-sm">— {m.full}</span>                    </div>
+                    <p className="text-sm text-slate-500 mt-1">{m.desc}</p>
+                    <p className="text-xs text-amber-700 mt-1">Adapter ready. Connect real solver by setting {m.name.toUpperCase()}_EXECUTABLE in .env</p>
                   </div>
                 </div>
               ))}
               {!useSPH && !useDelft3D && (
-                <div className="flex items-center gap-2 text-red-400 text-sm">
+                <div className="flex items-center gap-2 text-red-600 text-sm">
                   <AlertCircle className="h-4 w-4" />
                   Please select at least one model.
                 </div>
@@ -306,7 +299,7 @@ export default function NewSimulationPage() {
           {step === 6 && (
             <div className="space-y-4">
               {error && (
-                <div className="flex items-center gap-2 text-red-400 bg-red-900/20 border border-red-700/30 rounded p-3 text-sm">
+                <div className="flex items-center gap-2 text-red-600 bg-red-900/20 border border-red-700/30 rounded p-3 text-sm">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   {error}
                 </div>
@@ -324,13 +317,13 @@ export default function NewSimulationPage() {
                   { label: 'Sim Duration', value: `${params.simulation_duration_hrs} hrs` },
                   { label: 'Terrain Res.', value: `${params.terrain_resolution_m} m` },
                 ].map(row => (
-                  <div key={row.label} className="flex justify-between bg-slate-800 rounded-lg px-4 py-3">
-                    <span className="text-slate-400 text-sm">{row.label}</span>
-                    <span className="text-white text-sm font-medium">{row.value}</span>
+                  <div key={row.label} className="flex justify-between bg-orange-100 rounded-lg px-4 py-3">
+                    <span className="text-slate-500 text-sm">{row.label}</span>
+                    <span className="text-slate-800 text-sm font-medium">{row.value}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded p-3">
+              <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded p-3">
                 <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                 Selected models are MOCK implementations. Results are for demonstration only.
               </div>
@@ -340,11 +333,11 @@ export default function NewSimulationPage() {
           {/* Step 7: Run */}
           {step === 7 && (
             <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-cyan-900/40 border-2 border-cyan-600 flex items-center justify-center mx-auto">
-                {submitting ? <Loader2 className="h-8 w-8 text-cyan-400 animate-spin" /> : <Play className="h-8 w-8 text-cyan-400" fill="currentColor" />}
+              <div className="w-16 h-16 rounded-full bg-orange-100 border-2 border-orange-600 flex items-center justify-center mx-auto">
+                {submitting ? <Loader2 className="h-8 w-8 text-orange-400 animate-spin" /> : <Play className="h-8 w-8 text-orange-400" fill="currentColor" />}
               </div>
-              <h3 className="text-xl font-bold text-white">{submitting ? 'Creating Simulation...' : 'Ready to Run'}</h3>
-              <p className="text-slate-400 max-w-sm mx-auto text-sm">
+              <h3 className="text-xl font-bold text-slate-800">{submitting ? 'Creating Simulation...' : 'Ready to Run'}</h3>
+              <p className="text-slate-500 max-w-sm mx-auto text-sm">
                 {submitting ? 'Sending configuration to backend...' : 'Click the button below to submit this simulation for processing.'}
               </p>
               {!submitting && (

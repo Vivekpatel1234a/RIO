@@ -37,7 +37,7 @@ export default function FloodMap(props: FloodMapProps) {
           sources: {
             'carto': {
               type: 'raster',
-              tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
+              tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
               tileSize: 256,
               attribution: '&copy; CartoDB &copy; OpenStreetMap',
             }
@@ -67,10 +67,10 @@ export default function FloodMap(props: FloodMapProps) {
         map.addSource('river', { type: 'geojson', data: props.riverGeoJSON as any });
         map.addLayer({ id: 'river-line', type: 'line', source: 'river',
           filter: ['==', ['get', 'type'], 'river_centerline'],
-          paint: { 'line-color': '#0EA5E9', 'line-width': 2.5 } });
+          paint: { 'line-color': '#F97316', 'line-width': 2.5 } });
         map.addLayer({ id: 'river-poly', type: 'fill', source: 'river',
           filter: ['==', ['get', 'type'], 'river_polygon'],
-          paint: { 'fill-color': '#0EA5E9', 'fill-opacity': 0.25 } });
+          paint: { 'fill-color': '#F97316', 'fill-opacity': 0.25 } });
       }
     }
     // Add dam marker
@@ -86,8 +86,8 @@ export default function FloodMap(props: FloodMapProps) {
         (map.getSource('reservoir') as GeoJSONSource).setData(props.reservoirGeoJSON as any);
       } else {
         map.addSource('reservoir', { type: 'geojson', data: props.reservoirGeoJSON as any });
-        map.addLayer({ id: 'reservoir-fill', type: 'fill', source: 'reservoir', paint: { 'fill-color': '#38BDF8', 'fill-opacity': 0.4 } });
-        map.addLayer({ id: 'reservoir-line', type: 'line', source: 'reservoir', paint: { 'line-color': '#38BDF8', 'line-width': 1.5 } });
+        map.addLayer({ id: 'reservoir-fill', type: 'fill', source: 'reservoir', paint: { 'fill-color': '#FB923C', 'fill-opacity': 0.4 } });
+        map.addLayer({ id: 'reservoir-line', type: 'line', source: 'reservoir', paint: { 'line-color': '#FB923C', 'line-width': 1.5 } });
       }
     }
     // Add settlements
@@ -141,33 +141,31 @@ export default function FloodMap(props: FloodMapProps) {
     <div className="relative w-full h-full">
       <div ref={mapContainerRef} className="absolute inset-0" />
       {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-          <div className="text-cyan-400 animate-pulse">Loading map...</div>
+        <div className="absolute inset-0 flex items-center justify-center bg-orange-50">
+          <div className="text-orange-400 animate-pulse">Loading map...</div>
         </div>
       )}
       {/* Layer controls */}
-      <div className="absolute top-4 right-4 bg-slate-900/90 rounded-lg border border-slate-700 p-3 text-xs space-y-2">
-        <div className="flex items-center gap-1.5 text-slate-300 font-medium mb-1">
+      <div className="absolute top-4 right-4 bg-orange-50/90 rounded-lg border border-orange-200 p-3 text-xs space-y-2">
+        <div className="flex items-center gap-1.5 text-slate-600 font-medium mb-1">
           <Layers className="h-3.5 w-3.5" /> Layers
         </div>
         {Object.entries(layerVisibility).map(([layer, visible]) => (
           <button key={layer} onClick={() => toggleLayer(layer)}
-            className="flex items-center gap-2 text-slate-400 hover:text-white w-full">
-            {visible ? <Eye className="h-3 w-3 text-cyan-400" /> : <EyeOff className="h-3 w-3" />}
+            className="flex items-center gap-2 text-slate-500 hover:text-slate-800 w-full">
+            {visible ? <Eye className="h-3 w-3 text-orange-400" /> : <EyeOff className="h-3 w-3" />}
             <span className="capitalize">{layer}</span>
           </button>
         ))}
       </div>
       {/* Legend */}
-      <div className="absolute bottom-8 left-4 bg-slate-900/90 rounded-lg border border-slate-700 p-3 text-xs">
-        <div className="text-slate-300 font-medium mb-2">Flood Depth</div>
+      <div className="absolute bottom-8 left-4 bg-orange-50/90 rounded-lg border border-orange-200 p-3 text-xs">
+        <div className="text-slate-600 font-medium mb-2">Flood Depth</div>
         {[['#FFF176','0–0.5m'],['#FFB300','0.5–1m'],['#F57C00','1–2m'],['#D32F2F','2–5m'],['#7B1FA2','>5m']].map(([color, label]) => (
-          <div key={label} className="flex items-center gap-2 text-slate-400">
+          <div key={label} className="flex items-center gap-2 text-slate-500">
             <span className="w-4 h-3 rounded" style={{background:color}} />{label}
           </div>
-        ))}
-        <div className="mt-1 text-amber-400 text-[10px]">MOCK DATA</div>
-      </div>
+        ))}      </div>
     </div>
   );
 }

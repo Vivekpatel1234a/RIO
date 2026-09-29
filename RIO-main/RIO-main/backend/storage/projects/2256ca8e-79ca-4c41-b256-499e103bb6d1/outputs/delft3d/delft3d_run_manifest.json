@@ -1,0 +1,27 @@
+{
+  "model": "DELFT3D",
+  "model_version": "mock-delft3d-1.0",
+  "is_mock": true,
+  "disclaimer": "MOCK DELFT3D \u2014 DEMONSTRATION ONLY. Not a real Delft3D solver.",
+  "dam_location": [
+    79.85,
+    30.35
+  ],
+  "grid_shape": [
+    128,
+    128
+  ],
+  "bounds": {
+    "min_lon": 79.8,
+    "min_lat": 30.2,
+    "max_lon": 80.1,
+    "max_lat": 30.4
+  },
+  "parameters": {
+    "reservoir_volume_mcm": 150.0,
+    "breach_width_m": 80.0,
+    "dam_height_m": 85.0,
+    "peak_discharge_m3s": 7050.0,
+    "simulation_duration_hrs": 24.0
+  }
+}

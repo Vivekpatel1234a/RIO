@@ -1,0 +1,13 @@
+{
+  "model": "DELFT3D",
+  "is_mock": true,
+  "grid_type": "structured_curvilinear",
+  "grid_cells_m": 30.0,
+  "mmax": 128,
+  "nmax": 128,
+  "coordinate_system": "Spherical",
+  "dam_location": [
+    79.85,
+    30.35
+  ]
+}

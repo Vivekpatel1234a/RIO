@@ -11,13 +11,13 @@ const SECTIONS = [
   {
     id: 'sih', icon: <Shield className="h-5 w-5" />, title: 'SIH Problem Statement',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
+      <div className="space-y-3 text-sm text-slate-600">
         <p>
           The Smart India Hackathon (SIH) problem addressed by this platform is the development of a
-          <strong className="text-white"> generalized software framework</strong> for dam-break analysis,
+          <strong className="text-slate-800"> generalized software framework</strong> for dam-break analysis,
           river blockage analysis, flash-flood scenario generation, and flood inundation simulation.
         </p>
-        <div className="bg-slate-800 rounded-lg p-4 space-y-1">
+        <div className="bg-orange-100 rounded-lg p-4 space-y-1">
           {[
             'Dam-break analysis (parametric breach models)',
             'River blockage / landslide dam analysis',
@@ -34,7 +34,7 @@ const SECTIONS = [
             'HADR decision support',
           ].map(item => (
             <div key={item} className="flex items-start gap-2">
-              <span className="text-cyan-500 mt-0.5">•</span>
+              <span className="text-orange-500 mt-0.5">•</span>
               <span>{item}</span>
             </div>
           ))}
@@ -45,9 +45,9 @@ const SECTIONS = [
   {
     id: 'hadr', icon: <Shield className="h-5 w-5" />, title: 'HADR — Humanitarian Assistance & Disaster Relief',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
+      <div className="space-y-3 text-sm text-slate-600">
         <p>
-          HADR operations require <strong className="text-white">rapid, accurate situational awareness</strong> during
+          HADR operations require <strong className="text-slate-800">rapid, accurate situational awareness</strong> during
           flood events. This platform provides pre-computed flood inundation maps, impact estimates, and
           geospatial exports to support civil authorities, NDRF, and disaster management agencies.
         </p>
@@ -63,20 +63,20 @@ const SECTIONS = [
   {
     id: 'dam-break', icon: <Waves className="h-5 w-5" />, title: 'Dam-Break Analysis',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
+      <div className="space-y-3 text-sm text-slate-600">
         <p>
           Dam-break analysis models the catastrophic or partial failure of a dam structure, computing the
-          downstream flood wave propagation. The <strong className="text-white">breach hydrograph</strong> —
+          downstream flood wave propagation. The <strong className="text-slate-800">breach hydrograph</strong> —
           the discharge time series at the dam — is computed using parametric formulas.
         </p>
-        <div className="bg-slate-800 rounded-lg p-4 font-mono text-xs space-y-2">
-          <div className="text-cyan-400">Simplified rectangular breach formula:</div>
-          <div className="text-white">Q = Cd × Bw × √(2g) × h<sup>1.5</sup></div>
-          <div className="text-slate-400">where:</div>
-          <div className="text-slate-300">  Cd = 0.577 (discharge coefficient)</div>
-          <div className="text-slate-300">  Bw = breach width (m)</div>
-          <div className="text-slate-300">  h  = head of water above breach (m)</div>
-          <div className="text-slate-300">  g  = 9.81 m/s²</div>
+        <div className="bg-orange-100 rounded-lg p-4 font-mono text-xs space-y-2">
+          <div className="text-orange-400">Simplified rectangular breach formula:</div>
+          <div className="text-slate-800">Q = Cd × Bw × √(2g) × h<sup>1.5</sup></div>
+          <div className="text-slate-500">where:</div>
+          <div className="text-slate-600">  Cd = 0.577 (discharge coefficient)</div>
+          <div className="text-slate-600">  Bw = breach width (m)</div>
+          <div className="text-slate-600">  h  = head of water above breach (m)</div>
+          <div className="text-slate-600">  g  = 9.81 m/s²</div>
         </div>
         <p>
           The resulting hydrograph drives the downstream hydraulic simulation (SPH or Delft3D), which
@@ -88,7 +88,7 @@ const SECTIONS = [
   {
     id: 'dem', icon: <MapPin className="h-5 w-5" />, title: 'DEM — Digital Elevation Model',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
+      <div className="space-y-3 text-sm text-slate-600">
         <p>
           The Digital Elevation Model (DEM) is the terrain representation that drives flood routing.
           Elevation data determines flow direction, flood extent, and depth.
@@ -100,10 +100,10 @@ const SECTIONS = [
             { label: 'TanDEM-X', res: '12 m', desc: 'DLR X-band radar. Very high accuracy.' },
             { label: 'LiDAR', res: '<1 m', desc: 'Airborne/terrestrial. Highest accuracy for critical infrastructure.' },
           ].map(d => (
-            <div key={d.label} className="bg-slate-800 rounded-lg p-3">
-              <div className="font-semibold text-white">{d.label}</div>
-              <div className="text-xs text-cyan-400">{d.res}</div>
-              <div className="text-xs text-slate-400 mt-1">{d.desc}</div>
+            <div key={d.label} className="bg-orange-100 rounded-lg p-3">
+              <div className="font-semibold text-slate-800">{d.label}</div>
+              <div className="text-xs text-orange-400">{d.res}</div>
+              <div className="text-xs text-slate-500 mt-1">{d.desc}</div>
             </div>
           ))}
         </div>
@@ -114,24 +114,24 @@ const SECTIONS = [
   {
     id: 'sph', icon: <Cpu className="h-5 w-5" />, title: 'SPH — Smooth Particle Hydrodynamics',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
-        <div className="flex items-start gap-2 text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded p-3 text-xs">
+      <div className="space-y-3 text-sm text-slate-600">
+        <div className="flex items-start gap-2 text-amber-700 bg-amber-50 border border-amber-200 rounded p-3 text-xs">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           Current SPH results are MOCK/DEMONSTRATION ONLY. A real SPH solver (e.g., DualSPHysics) has not been installed.
         </div>
         <p>
-          SPH is a <strong className="text-white">Lagrangian meshfree method</strong> that represents the fluid
+          SPH is a <strong className="text-slate-800">Lagrangian meshfree method</strong> that represents the fluid
           as a collection of particles. Each particle carries fluid properties (density, velocity, pressure)
           and interacts with neighbouring particles through smoothing kernel functions.
         </p>
-        <div className="bg-slate-800 rounded-lg p-4 space-y-2 text-xs">
-          <div className="text-cyan-400">SPH Advantages for Dam Break:</div>
+        <div className="bg-orange-100 rounded-lg p-4 space-y-2 text-xs">
+          <div className="text-orange-400">SPH Advantages for Dam Break:</div>
           <div>• Naturally handles large free-surface deformations</div>
           <div>• No mesh required — automatic wet/dry front tracking</div>
           <div>• Suitable for rapid initial transient of dam break</div>
           <div>• Can model debris and sediment transport</div>
-          <div className="text-cyan-400 mt-2">Connect real solver:</div>
-          <div className="font-mono text-slate-300">Set SPH_EXECUTABLE=/path/to/DualSPHysics in backend/.env</div>
+          <div className="text-orange-400 mt-2">Connect real solver:</div>
+          <div className="font-mono text-slate-600">Set SPH_EXECUTABLE=/path/to/DualSPHysics in backend/.env</div>
         </div>
       </div>
     ),
@@ -139,24 +139,24 @@ const SECTIONS = [
   {
     id: 'delft3d', icon: <Activity className="h-5 w-5" />, title: 'Delft3D — Structured Grid Hydraulics',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
-        <div className="flex items-start gap-2 text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded p-3 text-xs">
+      <div className="space-y-3 text-sm text-slate-600">
+        <div className="flex items-start gap-2 text-amber-700 bg-amber-50 border border-amber-200 rounded p-3 text-xs">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           Current Delft3D results are MOCK/DEMONSTRATION ONLY. Real Delft3D runtime has not been installed.
         </div>
         <p>
-          Delft3D-FLOW is a <strong className="text-white">structured curvilinear grid</strong> hydrodynamic
+          Delft3D-FLOW is a <strong className="text-slate-800">structured curvilinear grid</strong> hydrodynamic
           model solving the 2D shallow water equations (depth-averaged). It is widely used for operational
           flood forecasting, coastal modelling, and river engineering.
         </p>
-        <div className="bg-slate-800 rounded-lg p-4 space-y-2 text-xs">
-          <div className="text-blue-400">Delft3D Advantages:</div>
+        <div className="bg-orange-100 rounded-lg p-4 space-y-2 text-xs">
+          <div className="text-blue-600">Delft3D Advantages:</div>
           <div>• Operational, production-grade hydraulic modelling</div>
           <div>• Mature calibration and validation tools</div>
           <div>• Widely accepted in engineering and regulatory contexts</div>
           <div>• Integration with Delft3D-FM for unstructured grids</div>
-          <div className="text-blue-400 mt-2">Connect real solver:</div>
-          <div className="font-mono text-slate-300">Set DELFT3D_EXECUTABLE=/path/to/d_hydro in backend/.env</div>
+          <div className="text-blue-600 mt-2">Connect real solver:</div>
+          <div className="font-mono text-slate-600">Set DELFT3D_EXECUTABLE=/path/to/d_hydro in backend/.env</div>
         </div>
       </div>
     ),
@@ -164,9 +164,9 @@ const SECTIONS = [
   {
     id: 'satellite', icon: <Satellite className="h-5 w-5" />, title: 'Satellite & GEE Integration',
     content: (
-      <div className="space-y-3 text-sm text-slate-300">
+      <div className="space-y-3 text-sm text-slate-600">
         <p>
-          The platform is designed to integrate with <strong className="text-white">Google Earth Engine (GEE)</strong>
+          The platform is designed to integrate with <strong className="text-slate-800">Google Earth Engine (GEE)</strong>
           for automated satellite data retrieval and flood change detection.
         </p>
         <div className="grid grid-cols-2 gap-3">
@@ -176,13 +176,13 @@ const SECTIONS = [
             { name: 'Landsat 8/9', use: 'Historical baseline analysis. Long time series water extent.' },
             { name: 'GPM IMERG', use: 'Near-real-time global precipitation. 30-min, 10km resolution.' },
           ].map(s => (
-            <div key={s.name} className="bg-slate-800 rounded-lg p-3">
-              <div className="font-semibold text-white text-sm">{s.name}</div>
-              <div className="text-xs text-slate-400 mt-1">{s.use}</div>
+            <div key={s.name} className="bg-orange-100 rounded-lg p-3">
+              <div className="font-semibold text-slate-800 text-sm">{s.name}</div>
+              <div className="text-xs text-slate-500 mt-1">{s.use}</div>
             </div>
           ))}
         </div>
-        <div className="font-mono text-xs bg-slate-800 rounded p-3 text-slate-300">
+        <div className="font-mono text-xs bg-orange-100 rounded p-3 text-slate-600">
           Configure: GEE_PROJECT_ID and GEE_SERVICE_ACCOUNT in backend/.env
         </div>
       </div>
@@ -191,10 +191,10 @@ const SECTIONS = [
   {
     id: 'architecture', icon: <Globe className="h-5 w-5" />, title: 'System Architecture',
     content: (
-      <div className="space-y-4 text-sm text-slate-300">
-        <pre className="bg-slate-800 rounded-lg p-4 text-xs text-cyan-300 overflow-x-auto font-mono leading-relaxed">
+      <div className="space-y-4 text-sm text-slate-600">
+        <pre className="bg-orange-100 rounded-lg p-4 text-xs text-orange-600 overflow-x-auto font-mono leading-relaxed">
 {`┌─────────────────────────────────────────────────┐
-│              HADR FLOOD SIMULATION PLATFORM      │
+│              RIO      │
 ├─────────────────────────────────────────────────┤
 │  FRONTEND (Next.js 14 + TypeScript)             │
 │  ├── Dashboard (MapLibre GL GIS map)            │
@@ -248,35 +248,33 @@ export default function AboutPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-700 rounded-xl p-8 space-y-4">
+      <div className="bg-gradient-to-br from-orange-50 to-white border border-orange-200 rounded-xl p-8 space-y-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-cyan-900/40 rounded-xl">
-            <Waves className="h-8 w-8 text-cyan-400" />
+          <div className="p-3 bg-orange-100 rounded-xl">
+            <Waves className="h-8 w-8 text-orange-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">HADR Flood Simulation Platform</h1>
-            <p className="text-slate-400 text-sm">SIH Problem — Generalized Framework for Dam-Break &amp; Flood Analysis</p>
+            <h1 className="text-2xl font-bold text-slate-800">RIO</h1>
+            <p className="text-slate-500 text-sm">SIH Problem — Generalized Framework for Dam-Break &amp; Flood Analysis</p>
           </div>
         </div>
-        <p className="text-slate-300 leading-relaxed">
+        <p className="text-slate-600 leading-relaxed">
           A scientific computing platform for dam-break analysis, river blockage analysis, flash-flood
           scenario generation, and flood inundation simulation. Designed for Humanitarian Assistance and
           Disaster Relief (HADR) decision support, integrating SPH and Delft3D hydraulic models with
           GIS visualization, satellite data, and automated impact analysis.
         </p>
         <div className="flex flex-wrap gap-2">
-          {['SIH', 'HADR', 'Dam Break', 'SPH (Mock)', 'Delft3D (Mock)', 'GEE Ready', 'GIS Exports', 'Open Source'].map(tag => (
-            <Badge key={tag} variant="secondary">{tag}</Badge>
-          ))}
+          
         </div>
       </div>
 
       {/* Mock disclaimer */}
-      <div className="flex items-start gap-3 bg-amber-900/20 border border-amber-700/40 rounded-xl p-4">
-        <AlertTriangle className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+      <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <AlertTriangle className="h-5 w-5 text-amber-700 shrink-0 mt-0.5" />
         <div>
-          <div className="font-semibold text-amber-300 text-sm">Important: Current Status</div>
-          <p className="text-amber-200/80 text-sm mt-1">
+          <div className="font-semibold text-amber-700 text-sm">Important: Current Status</div>
+          <p className="text-amber-700/80 text-sm mt-1">
             All SPH and Delft3D outputs in this platform are <strong>MOCK/DEMONSTRATION ONLY</strong>.
             The real DualSPHysics and Delft3D-FLOW solvers have not been installed. The model adapters are
             complete and ready — only the solver executables need to be provided. Synthetic DEM, hydrology,
@@ -288,17 +286,17 @@ export default function AboutPage() {
       {/* Quick stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Pipeline Stages', value: '9', icon: <Activity className="h-5 w-5 text-cyan-400" /> },
-          { label: 'Export Formats', value: '5', icon: <Globe className="h-5 w-5 text-blue-400" /> },
-          { label: 'API Endpoints', value: '30+', icon: <BarChart2 className="h-5 w-5 text-violet-400" /> },
-          { label: 'GIS Layers', value: '10+', icon: <MapPin className="h-5 w-5 text-green-400" /> },
+          { label: 'Pipeline Stages', value: '9', icon: <Activity className="h-5 w-5 text-orange-400" /> },
+          { label: 'Export Formats', value: '5', icon: <Globe className="h-5 w-5 text-blue-600" /> },
+          { label: 'API Endpoints', value: '30+', icon: <BarChart2 className="h-5 w-5 text-orange-400" /> },
+          { label: 'GIS Layers', value: '10+', icon: <MapPin className="h-5 w-5 text-green-600" /> },
         ].map(s => (
           <Card key={s.label}>
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-slate-400">{s.label}</p>
-                  <p className="text-2xl font-bold text-white">{s.value}</p>
+                  <p className="text-xs text-slate-500">{s.label}</p>
+                  <p className="text-2xl font-bold text-slate-800">{s.value}</p>
                 </div>
                 {s.icon}
               </div>
@@ -311,7 +309,7 @@ export default function AboutPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-cyan-400" />
+            <BookOpen className="h-5 w-5 text-orange-400" />
             SIH Problem → Platform Feature Mapping
           </CardTitle>
         </CardHeader>
@@ -319,10 +317,10 @@ export default function AboutPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-700">
-                  <th className="text-left py-2 pr-4 text-slate-400">SIH Requirement</th>
-                  <th className="text-left py-2 pr-4 text-slate-400">Platform Feature</th>
-                  <th className="text-left py-2 text-slate-400">Status</th>
+                <tr className="border-b border-orange-200">
+                  <th className="text-left py-2 pr-4 text-slate-500">SIH Requirement</th>
+                  <th className="text-left py-2 pr-4 text-slate-500">Platform Feature</th>
+                  <th className="text-left py-2 text-slate-500">Status</th>
                 </tr>
               </thead>
               <tbody className="text-xs">
@@ -344,9 +342,9 @@ export default function AboutPage() {
                   ['Delft3D integration', 'Delft3DModelAdapter (mock → real)', 'ADAPTER READY'],
                   ['SPH integration', 'SPHModelAdapter (mock → real)', 'ADAPTER READY'],
                 ].map(([req, feat, status]) => (
-                  <tr key={req} className="border-b border-slate-800 hover:bg-slate-800/30">
-                    <td className="py-2 pr-4 text-slate-300">{req}</td>
-                    <td className="py-2 pr-4 text-slate-400 font-mono">{feat}</td>
+                  <tr key={req} className="border-b border-orange-200 hover:bg-orange-100/30">
+                    <td className="py-2 pr-4 text-slate-600">{req}</td>
+                    <td className="py-2 pr-4 text-slate-500 font-mono">{feat}</td>
                     <td className="py-2">
                       <Badge variant={status === 'IMPLEMENTED' ? 'success' : status === 'MOCK' ? 'warning' : status === 'ADAPTER READY' ? 'default' : 'secondary'} className="text-[10px]">
                         {status}
@@ -370,10 +368,10 @@ export default function AboutPage() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-cyan-400">{section.icon}</div>
-                  <span className="font-semibold text-white">{section.title}</span>
+                  <div className="text-orange-400">{section.icon}</div>
+                  <span className="font-semibold text-slate-800">{section.title}</span>
                 </div>
-                {openSection === section.id ? <ChevronDown className="h-4 w-4 text-slate-400" /> : <ChevronRight className="h-4 w-4 text-slate-400" />}
+                {openSection === section.id ? <ChevronDown className="h-4 w-4 text-slate-500" /> : <ChevronRight className="h-4 w-4 text-slate-500" />}
               </div>
             </button>
             {openSection === section.id && (
@@ -386,8 +384,8 @@ export default function AboutPage() {
       </div>
 
       {/* Credits */}
-      <div className="text-center text-xs text-slate-600 space-y-1 pb-4">
-        <p>HADR Flood Simulation Platform — SIH Project</p>
+      <div className="text-center text-xs text-slate-500 space-y-1 pb-4">
+        <p>RIO — SIH Project</p>
         <p>Built with Next.js, FastAPI, MapLibre GL JS, NumPy, and open-source GIS libraries.</p>
         <p className="text-amber-700">All simulation outputs are MOCK/DEMONSTRATION DATA. Not for real emergency use.</p>
       </div>

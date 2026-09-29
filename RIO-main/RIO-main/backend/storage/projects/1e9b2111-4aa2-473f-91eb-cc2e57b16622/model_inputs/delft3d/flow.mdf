@@ -1,0 +1,22 @@
+[model]
+FileCreatedBy     = HADR Platform Mock Delft3D Adapter
+FileCreationDate  = generated
+Ident             = Delft3D-FLOW
+
+[domain]
+MMax              = 128
+NMax              = 128
+KMax              = 1
+Coord             = Spherical
+Anglat            = 30.35
+
+[time]
+Tstart            = 0.0
+Tstop             = 1440.0
+Dt                = 0.1667
+Tunit             = M
+
+[remark]
+This is a MOCK Delft3D configuration file.
+No real Delft3D solver is installed.
+MOCK DELFT3D — DEMONSTRATION ONLY.

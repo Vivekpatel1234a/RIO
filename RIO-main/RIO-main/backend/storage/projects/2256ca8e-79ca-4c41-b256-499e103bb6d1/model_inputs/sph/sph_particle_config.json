@@ -1,0 +1,12 @@
+{
+  "model": "SPH",
+  "is_mock": true,
+  "particle_spacing_m": 30.0,
+  "smoothing_length_m": 60.0,
+  "dam_location": [
+    79.85,
+    30.35
+  ],
+  "reservoir_volume_mcm": 150.0,
+  "breach_width_m": 80.0
+}

@@ -12,25 +12,25 @@ import { MOCK_EXPORTS, type MockExportFile } from '@/lib/mockData';
 import { getExports } from '@/lib/api';
 
 const FORMAT_ICONS: Record<string, React.ReactNode> = {
-  GeoJSON: <FileJson className="h-4 w-4 text-green-400" />,
-  KML: <Map className="h-4 w-4 text-blue-400" />,
-  SHP: <Package className="h-4 w-4 text-amber-400" />,
-  GeoTIFF: <Database className="h-4 w-4 text-violet-400" />,
-  CSV: <FileText className="h-4 w-4 text-cyan-400" />,
+  GeoJSON: <FileJson className="h-4 w-4 text-green-600" />,
+  KML: <Map className="h-4 w-4 text-blue-600" />,
+  SHP: <Package className="h-4 w-4 text-amber-700" />,
+  GeoTIFF: <Database className="h-4 w-4 text-orange-400" />,
+  CSV: <FileText className="h-4 w-4 text-orange-400" />,
 };
 
 const FORMAT_COLORS: Record<string, string> = {
-  GeoJSON: 'bg-green-900/30 text-green-300 border-green-700/40',
-  KML: 'bg-blue-900/30 text-blue-300 border-blue-700/40',
-  SHP: 'bg-amber-900/30 text-amber-300 border-amber-700/40',
-  GeoTIFF: 'bg-violet-900/30 text-violet-300 border-violet-700/40',
-  CSV: 'bg-cyan-900/30 text-cyan-300 border-cyan-700/40',
+  GeoJSON: 'bg-green-900/30 text-green-700 border-green-200',
+  KML: 'bg-blue-900/30 text-blue-700 border-blue-700/40',
+  SHP: 'bg-amber-50 text-amber-700 border-amber-200',
+  GeoTIFF: 'bg-orange-900/30 text-orange-600 border-orange-700/40',
+  CSV: 'bg-orange-900/30 text-orange-600 border-orange-700/40',
 };
 
 function StatusIcon({ status }: { status: string }) {
-  if (status === 'READY') return <CheckCircle className="h-4 w-4 text-green-400" />;
-  if (status === 'GENERATING') return <Clock className="h-4 w-4 text-amber-400 animate-pulse" />;
-  return <XCircle className="h-4 w-4 text-red-400" />;
+  if (status === 'READY') return <CheckCircle className="h-4 w-4 text-green-600" />;
+  if (status === 'GENERATING') return <Clock className="h-4 w-4 text-amber-700 animate-pulse" />;
+  return <XCircle className="h-4 w-4 text-red-600" />;
 }
 
 export default function ExportsPage() {
@@ -91,7 +91,7 @@ export default function ExportsPage() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-20 right-4 z-50 bg-cyan-900 border border-cyan-700 text-cyan-200 text-sm px-4 py-2 rounded-lg shadow-lg max-w-sm">
+        <div className="fixed top-20 right-4 z-50 bg-orange-900 border border-orange-700 text-orange-200 text-sm px-4 py-2 rounded-lg shadow-lg max-w-sm">
           {toast}
         </div>
       )}
@@ -99,11 +99,11 @@ export default function ExportsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Download className="h-6 w-6 text-cyan-400" />
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+            <Download className="h-6 w-6 text-orange-400" />
             GIS Export Center
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Download flood simulation outputs in GIS-ready formats.
           </p>
         </div>
@@ -115,17 +115,17 @@ export default function ExportsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total Files', value: stats.total, icon: <Database className="h-5 w-5 text-cyan-400" /> },
-          { label: 'Ready', value: stats.ready, icon: <CheckCircle className="h-5 w-5 text-green-400" /> },
-          { label: 'Total Size', value: `${Math.round(stats.total_kb / 1024 * 10) / 10} MB`, icon: <Package className="h-5 w-5 text-violet-400" /> },
-          { label: 'Formats', value: '5', icon: <Map className="h-5 w-5 text-blue-400" /> },
+          { label: 'Total Files', value: stats.total, icon: <Database className="h-5 w-5 text-orange-400" /> },
+          { label: 'Ready', value: stats.ready, icon: <CheckCircle className="h-5 w-5 text-green-600" /> },
+          { label: 'Total Size', value: `${Math.round(stats.total_kb / 1024 * 10) / 10} MB`, icon: <Package className="h-5 w-5 text-orange-400" /> },
+          { label: 'Formats', value: '5', icon: <Map className="h-5 w-5 text-blue-600" /> },
         ].map(s => (
           <Card key={s.label}>
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-slate-400">{s.label}</p>
-                  <p className="text-2xl font-bold text-white">{s.value}</p>
+                  <p className="text-xs text-slate-500">{s.label}</p>
+                  <p className="text-2xl font-bold text-slate-800">{s.value}</p>
                 </div>
                 {s.icon}
               </div>
@@ -145,7 +145,7 @@ export default function ExportsPage() {
               className={`flex items-center gap-2 p-3 rounded-lg border transition-all ${
                 filterFormat === fmt
                   ? `${FORMAT_COLORS[fmt]} ring-1 ring-current`
-                  : 'border-slate-700 bg-slate-900 text-slate-400 hover:border-slate-600'
+                  : 'border-orange-200 bg-orange-50 text-slate-500 hover:border-orange-200'
               }`}
             >
               {FORMAT_ICONS[fmt]}
@@ -161,11 +161,11 @@ export default function ExportsPage() {
       {/* Filters */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-slate-400" />
-          <span className="text-xs text-slate-400">Model:</span>
+          <Filter className="h-4 w-4 text-slate-500" />
+          <span className="text-xs text-slate-500">Model:</span>
           {models.map(m => (
             <button key={m} onClick={() => setFilterModel(m)}
-              className={`px-2 py-1 text-xs rounded transition-colors ${filterModel === m ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-white'}`}>
+              className={`px-2 py-1 text-xs rounded transition-colors ${filterModel === m ? 'bg-orange-600 text-slate-800' : 'bg-orange-100 text-slate-500 hover:text-slate-800'}`}>
               {m}
             </button>
           ))}
@@ -175,21 +175,21 @@ export default function ExportsPage() {
       {/* Files table */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <RefreshCw className="h-8 w-8 text-cyan-400 animate-spin" />
+          <RefreshCw className="h-8 w-8 text-orange-400 animate-spin" />
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-slate-700">
+        <div className="overflow-x-auto rounded-lg border border-orange-200">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-700 bg-slate-900">
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">File</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Format</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium hidden md:table-cell">Model</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium hidden lg:table-cell">Simulation</th>
-                <th className="text-right px-4 py-3 text-slate-400 font-medium hidden md:table-cell">Size</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium hidden lg:table-cell">Created</th>
-                <th className="text-center px-4 py-3 text-slate-400 font-medium">Status</th>
-                <th className="text-right px-4 py-3 text-slate-400 font-medium">Actions</th>
+              <tr className="border-b border-orange-200 bg-orange-50">
+                <th className="text-left px-4 py-3 text-slate-500 font-medium">File</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium">Format</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium hidden md:table-cell">Model</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium hidden lg:table-cell">Simulation</th>
+                <th className="text-right px-4 py-3 text-slate-500 font-medium hidden md:table-cell">Size</th>
+                <th className="text-left px-4 py-3 text-slate-500 font-medium hidden lg:table-cell">Created</th>
+                <th className="text-center px-4 py-3 text-slate-500 font-medium">Status</th>
+                <th className="text-right px-4 py-3 text-slate-500 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -200,11 +200,11 @@ export default function ExportsPage() {
                   </td>
                 </tr>
               ) : filtered.map((exp, i) => (
-                <tr key={exp.id} className={`border-b border-slate-800 hover:bg-slate-800/50 ${i % 2 === 0 ? 'bg-slate-900/30' : ''}`}>
+                <tr key={exp.id} className={`border-b border-orange-200 hover:bg-orange-100/50 ${i % 2 === 0 ? 'bg-orange-50/30' : ''}`}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      {FORMAT_ICONS[exp.format] || <FileText className="h-4 w-4 text-slate-400" />}
-                      <span className="text-white font-mono text-xs">{exp.filename}</span>
+                      {FORMAT_ICONS[exp.format] || <FileText className="h-4 w-4 text-slate-500" />}
+                      <span className="text-slate-800 font-mono text-xs">{exp.filename}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -213,12 +213,12 @@ export default function ExportsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell">
-                    <Badge variant={exp.model.includes('SPH') ? 'mock' : 'default'} className="text-[10px]">
+                    <Badge variant="default" className="text-[10px]">
                       {exp.model}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 hidden lg:table-cell text-slate-400 text-xs">{exp.simulation}</td>
-                  <td className="px-4 py-3 text-right hidden md:table-cell text-slate-400 font-mono text-xs">
+                  <td className="px-4 py-3 hidden lg:table-cell text-slate-500 text-xs">{exp.simulation}</td>
+                  <td className="px-4 py-3 text-right hidden md:table-cell text-slate-500 font-mono text-xs">
                     {exp.size_kb > 1024 ? `${(exp.size_kb / 1024).toFixed(1)} MB` : `${exp.size_kb} KB`}
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell text-slate-500 text-xs">
@@ -227,21 +227,21 @@ export default function ExportsPage() {
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-1">
                       <StatusIcon status={exp.status} />
-                      <span className="text-xs text-slate-400">{exp.status}</span>
+                      <span className="text-xs text-slate-500">{exp.status}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => handleDownload(exp)}
-                        className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-cyan-900/40 text-cyan-400 hover:bg-cyan-800/40 border border-cyan-700/30 transition-colors"
+                        className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-orange-100 text-orange-400 hover:bg-orange-800/40 border border-orange-700/30 transition-colors"
                         title="Download"
                         disabled={exp.status !== 'READY'}
                       >
                         <Download className="h-3 w-3" /> Download
                       </button>
                       <button
-                        className="p-1.5 text-slate-500 hover:text-slate-300 rounded"
+                        className="p-1.5 text-slate-500 hover:text-slate-600 rounded"
                         title="View"
                       >
                         <Eye className="h-3.5 w-3.5" />
@@ -256,7 +256,7 @@ export default function ExportsPage() {
       )}
 
       {/* Backend note */}
-      <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
+      <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
         <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
         <span>
           <strong>DEMO EXPORTS:</strong> Files listed above are generated by the mock simulation pipeline.
@@ -280,10 +280,10 @@ export default function ExportsPage() {
               { fmt: 'GeoTIFF', icon: '🗺️', desc: 'Raster outputs: flood depth, velocity, arrival time. Load as raster layers in QGIS.' },
               { fmt: 'CSV', icon: '📊', desc: 'Discharge hydrograph, impact summary. Import into Excel, Python, or R.' },
             ].map(f => (
-              <div key={f.fmt} className="bg-slate-800 rounded-lg p-4">
+              <div key={f.fmt} className="bg-orange-100 rounded-lg p-4">
                 <div className="text-2xl mb-2">{f.icon}</div>
-                <div className="font-medium text-white text-sm">{f.fmt}</div>
-                <div className="text-xs text-slate-400 mt-1">{f.desc}</div>
+                <div className="font-medium text-slate-800 text-sm">{f.fmt}</div>
+                <div className="text-xs text-slate-500 mt-1">{f.desc}</div>
               </div>
             ))}
           </div>

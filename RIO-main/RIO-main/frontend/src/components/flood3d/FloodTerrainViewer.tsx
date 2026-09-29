@@ -23,9 +23,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
 import {
   Play, Pause, RotateCcw, Layers, Mountain, Database,
-  AlertTriangle, Eye, EyeOff, MousePointer2,
+  AlertTriangle, Eye, EyeOff, MousePointer2, Waves,
 } from 'lucide-react';
 import { getFloodMeta, floodStateImageUrl } from '@/lib/api';
+import FloodVideoPlayer from './FloodVideoPlayer';
 
 const TERRARIUM_TILES =
   'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
@@ -73,6 +74,7 @@ export default function FloodTerrainViewer() {
   const [showDataPanel, setShowDataPanel] = useState(false);
   const [cursor, setCursor] = useState<{ lng: number; lat: number; elev: number | null } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'map' | 'video'>('map');
 
   // ------------------------------------------------------------------
   // Apply timeline position to layer opacities (crossfade between the
@@ -129,7 +131,7 @@ export default function FloodTerrainViewer() {
             sources: {
               carto: {
                 type: 'raster',
-                tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
+                tiles: ['https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_429m_1_f0a4ee7cc024ded1d212ce0e'],
                 tileSize: 256,
                 attribution: '&copy; CARTO &copy; OpenStreetMap contributors',
               },
@@ -167,10 +169,10 @@ export default function FloodTerrainViewer() {
               (map as any).addLayer({
                 id: 'sky', type: 'sky',
                 paint: {
-                  'sky-color': '#0b1020',
-                  'horizon-color': '#1d2b45',
+                  'sky-color': '#dcebfb',
+                  'horizon-color': '#f2f8ff',
                   'sky-horizon-blend': 0.6,
-                  'fog-color': '#0b1020',
+                  'fog-color': '#dcebfb',
                   'fog-ground-blend': 0.4,
                 },
               } as any);
@@ -318,70 +320,94 @@ export default function FloodTerrainViewer() {
       <div ref={containerRef} className="absolute inset-0" />
 
       {error && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-slate-950/90">
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-white/90">
           <div className="text-center space-y-2 max-w-md">
-            <AlertTriangle className="h-10 w-10 text-amber-400 mx-auto" />
-            <p className="text-slate-300 text-sm">{error}</p>
+            <AlertTriangle className="h-10 w-10 text-amber-700 mx-auto" />
+            <p className="text-slate-600 text-sm">{error}</p>
             <p className="text-slate-500 text-xs">Is the backend running on :8000?</p>
           </div>
         </div>
       )}
 
       {/* Top-left: title + provenance badge */}
-      <div className="absolute top-4 left-4 z-20 bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-3 space-y-1 max-w-sm">
+      <div className="absolute top-4 left-4 z-20 bg-orange-50/90 border border-orange-200 rounded-lg px-4 py-3 space-y-1 max-w-sm">
         <div className="flex items-center gap-2">
-          <Mountain className="h-4 w-4 text-cyan-400" />
-          <span className="text-white font-semibold text-sm">3D Flood Simulation — Real Data</span>
+          <Mountain className="h-4 w-4 text-orange-400" />
+          <span className="text-slate-800 font-semibold text-sm">3D Flood Simulation — Real Data</span>
         </div>
-        <div className="text-[11px] text-slate-400 leading-snug">
+        <div className="text-[11px] text-slate-500 leading-snug">
           HEC-RAS 2D outputs · EPSG:2271 → EPSG:4326 · depths in metres ·
           terrain from real DEM (AWS Terrain Tiles / USGS 3DEP)
         </div>
-        <div className="flex gap-1.5">
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/50">REAL RASTERS</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/50">REAL DEM TERRAIN</span>
+        {/* View mode toggle: 3D view vs simulation */}
+        <div className="flex gap-1 pt-1">
+          <button
+            onClick={() => setViewMode('map')}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-[11px] transition-colors ${
+              viewMode === 'map'
+                ? 'bg-orange-600/30 text-orange-600 border border-orange-600/50'
+                : 'text-slate-500 hover:text-slate-800 bg-orange-100 border border-orange-200'}`}
+          >
+            <Mountain className="h-3 w-3" /> 3D view
+          </button>
+          <button
+            onClick={() => setViewMode('video')}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-[11px] transition-colors ${
+              viewMode === 'video'
+                ? 'bg-orange-600/30 text-orange-600 border border-orange-600/50'
+                : 'text-slate-500 hover:text-slate-800 bg-orange-100 border border-orange-200'}`}
+          >
+            <Waves className="h-3 w-3" /> Simulation
+          </button>
         </div>
       </div>
 
+      {/* Video mode overlays the map (map stays mounted underneath) */}
+      {viewMode === 'video' && (
+        <div className="absolute inset-0 z-30">
+          <FloodVideoPlayer onBack={() => setViewMode('map')} />
+        </div>
+      )}
+
       {/* Right: layers + terrain controls */}
-      <div className="absolute top-4 right-14 z-20 bg-slate-900/90 border border-slate-700 rounded-lg p-3 text-xs space-y-2 w-52">
-        <div className="flex items-center gap-1.5 text-slate-300 font-medium">
+      <div className="absolute top-4 right-14 z-20 bg-orange-50/90 border border-orange-200 rounded-lg p-3 text-xs space-y-2 w-52">
+        <div className="flex items-center gap-1.5 text-slate-600 font-medium">
           <Layers className="h-3.5 w-3.5" /> Layers & Terrain
         </div>
-        <button onClick={() => setShowFlood(v => !v)} className="flex items-center gap-2 text-slate-400 hover:text-white w-full">
-          {showFlood ? <Eye className="h-3 w-3 text-cyan-400" /> : <EyeOff className="h-3 w-3" />}
+        <button onClick={() => setShowFlood(v => !v)} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 w-full">
+          {showFlood ? <Eye className="h-3 w-3 text-orange-400" /> : <EyeOff className="h-3 w-3" />}
           Flood depth (real)
         </button>
-        <button onClick={() => setShowWse(v => !v)} className="flex items-center gap-2 text-slate-400 hover:text-white w-full">
-          {showWse ? <Eye className="h-3 w-3 text-cyan-400" /> : <EyeOff className="h-3 w-3" />}
+        <button onClick={() => setShowWse(v => !v)} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 w-full">
+          {showWse ? <Eye className="h-3 w-3 text-orange-400" /> : <EyeOff className="h-3 w-3" />}
           WSE (Min) surface
         </button>
-        <div className="pt-1 border-t border-slate-800">
-          <div className="flex justify-between text-slate-400 mb-1">
+        <div className="pt-1 border-t border-orange-200">
+          <div className="flex justify-between text-slate-500 mb-1">
             <span>Vertical exaggeration</span>
-            <span className="text-cyan-300">{exaggeration.toFixed(1)}×</span>
+            <span className="text-orange-600">{exaggeration.toFixed(1)}×</span>
           </div>
           <input type="range" min={1} max={3} step={0.1} value={exaggeration}
             onChange={e => setExaggeration(parseFloat(e.target.value))}
-            className="w-full accent-cyan-500" />
+            className="w-full accent-orange-500" />
           <div className="text-[10px] text-slate-500">visual aid — 1.0× = true proportions</div>
         </div>
         <button onClick={() => setShowDataPanel(v => !v)}
-          className="flex items-center gap-2 text-slate-400 hover:text-white w-full pt-1 border-t border-slate-800">
+          className="flex items-center gap-2 text-slate-500 hover:text-slate-800 w-full pt-1 border-t border-orange-200">
           <Database className="h-3 w-3" /> Data provenance
         </button>
       </div>
 
       {/* Data provenance panel */}
       {showDataPanel && meta && (
-        <div className="absolute top-40 right-14 z-20 bg-slate-900/95 border border-slate-700 rounded-lg p-4 text-xs w-96 max-h-[55vh] overflow-y-auto space-y-3">
-          <div className="text-slate-200 font-semibold">Source data (resources/)</div>
-          <div className="text-slate-400">{meta.data_source}</div>
+        <div className="absolute top-40 right-14 z-20 bg-orange-50/95 border border-orange-200 rounded-lg p-4 text-xs w-96 max-h-[55vh] overflow-y-auto space-y-3">
+          <div className="text-slate-700 font-semibold">Source data (resources/)</div>
+          <div className="text-slate-500">{meta.data_source}</div>
           <div className="text-slate-500">{meta.crs_native}</div>
           <div className="text-slate-500">Served as: {meta.units_served}</div>
           {meta.files.map((f) => (
-            <div key={f.file} className="border border-slate-800 rounded p-2 space-y-1">
-              <div className="text-slate-300 font-medium break-all">{f.file}</div>
+            <div key={f.file} className="border border-orange-200 rounded p-2 space-y-1">
+              <div className="text-slate-600 font-medium break-all">{f.file}</div>
               {f.readable ? (
                 <div className="text-slate-500 space-y-0.5">
                   <div>{f.width}×{f.height} px @ {f.res_ft[0]} ft · NoData {f.nodata}</div>
@@ -390,7 +416,7 @@ export default function FloodTerrainViewer() {
                   <div>valid: {(f.valid_fraction * 100).toFixed(2)}% · area: {f.flooded_area_km2} km²</div>
                 </div>
               ) : (
-                <div className="flex items-start gap-1.5 text-amber-400">
+                <div className="flex items-start gap-1.5 text-amber-700">
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                   <span>Unreadable: {f.error}
                     {f.vrt_metadata?.source_filename && <> — missing source <span className="break-all">{f.vrt_metadata.source_filename}</span></>}
@@ -399,8 +425,8 @@ export default function FloodTerrainViewer() {
               )}
             </div>
           ))}
-          <div className="border-t border-slate-800 pt-2 space-y-1">
-            <div className="text-slate-300 font-medium">What is real vs. approximation</div>
+          <div className="border-t border-orange-200 pt-2 space-y-1">
+            <div className="text-slate-600 font-medium">What is real vs. approximation</div>
             <div className="text-slate-500 leading-relaxed">
               Terrain: real DEM tiles (Terrarium/USGS 3DEP), {meta.terrain_source.note}{' '}
               Flood/WSE rasters: exact values from the files above (reprojected + unit-converted only).{' '}
@@ -413,29 +439,29 @@ export default function FloodTerrainViewer() {
 
       {/* Cursor readout */}
       {cursor && (
-        <div className="absolute bottom-24 right-4 z-20 bg-slate-900/80 border border-slate-700 rounded px-2.5 py-1.5 text-[11px] text-slate-300 flex items-center gap-2">
-          <MousePointer2 className="h-3 w-3 text-cyan-400" />
+        <div className="absolute bottom-24 right-4 z-20 bg-orange-50/80 border border-orange-200 rounded px-2.5 py-1.5 text-[11px] text-slate-600 flex items-center gap-2">
+          <MousePointer2 className="h-3 w-3 text-orange-400" />
           {cursor.lat.toFixed(5)}°, {cursor.lng.toFixed(5)}°
-          {cursor.elev != null && <span className="text-cyan-300">terrain {cursor.elev.toFixed(1)} m</span>}
+          {cursor.elev != null && <span className="text-orange-600">terrain {cursor.elev.toFixed(1)} m</span>}
         </div>
       )}
 
       {/* Legend */}
-      <div className="absolute bottom-24 left-4 z-20 bg-slate-900/90 border border-slate-700 rounded-lg p-3 text-xs">
-        <div className="text-slate-300 font-medium mb-2">Flood depth (m) — real data</div>
+      <div className="absolute bottom-24 left-4 z-20 bg-orange-50/90 border border-orange-200 rounded-lg p-3 text-xs">
+        <div className="text-slate-600 font-medium mb-2">Flood depth (m) — real data</div>
         {DEPTH_LEGEND.map(([color, label]) => (
-          <div key={label} className="flex items-center gap-2 text-slate-400">
+          <div key={label} className="flex items-center gap-2 text-slate-500">
             <span className="w-4 h-3 rounded-sm" style={{ background: color }} />{label}
           </div>
         ))}
       </div>
 
       {/* Bottom control bar: play / timeline / camera */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-slate-900/95 border border-slate-700 rounded-lg px-4 py-3 w-[min(720px,90%)] space-y-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-orange-50/95 border border-orange-200 rounded-lg px-4 py-3 w-[min(720px,90%)] space-y-2">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setPlaying(p => !p)}
-            className="p-2 rounded-md bg-cyan-600 hover:bg-cyan-500 text-white"
+            className="p-2 rounded-md bg-orange-600 hover:bg-orange-500 text-slate-800"
             disabled={!mapReady}
           >
             {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" fill="currentColor" />}
@@ -443,21 +469,21 @@ export default function FloodTerrainViewer() {
           <input
             type="range" min={0} max={2} step={0.01} value={t}
             onChange={e => { setPlaying(false); scrub(parseFloat(e.target.value)); }}
-            className="flex-1 accent-cyan-500"
+            className="flex-1 accent-orange-500"
           />
-          <button onClick={resetCamera} className="p-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200" title="Reset camera">
+          <button onClick={resetCamera} className="p-2 rounded-md bg-orange-100 hover:bg-orange-200 text-slate-700" title="Reset camera">
             <RotateCcw className="h-4 w-4" />
           </button>
           <select
             value={speed} onChange={e => setSpeed(parseFloat(e.target.value))}
-            className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200"
+            className="bg-orange-100 border border-orange-200 rounded px-2 py-1 text-xs text-slate-700"
           >
             {[0.5, 1, 2, 4].map(s => <option key={s} value={s}>{s}×</option>)}
           </select>
         </div>
         <div className="flex items-center justify-between text-[11px]">
           {STATE_LABELS.map((l, i) => (
-            <span key={l} className={i === stateIndex ? 'text-cyan-300 font-medium' : 'text-slate-500'}>{l}</span>
+            <span key={l} className={i === stateIndex ? 'text-orange-600 font-medium' : 'text-slate-500'}>{l}</span>
           ))}
         </div>
         <div className="text-[10px] text-slate-500 text-center">
@@ -466,8 +492,8 @@ export default function FloodTerrainViewer() {
       </div>
 
       {!mapReady && !error && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950">
-          <div className="text-cyan-400 animate-pulse text-sm">Loading real terrain & flood rasters…</div>
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
+          <div className="text-orange-400 animate-pulse text-sm">Loading real terrain & flood rasters…</div>
         </div>
       )}
     </div>

@@ -5,7 +5,6 @@ import {
   Cpu, Globe, HardDrive, Satellite, CheckCircle,
   XCircle, AlertCircle, Eye, EyeOff, ChevronDown, ChevronRight
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
@@ -14,10 +13,10 @@ type Theme = 'dark' | 'light' | 'system';
 function SectionHeader({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <div className="flex items-start gap-3 mb-4">
-      <div className="p-2 bg-slate-800 rounded-lg text-cyan-400">{icon}</div>
+      <div className="p-2 bg-orange-100 rounded-lg text-orange-400">{icon}</div>
       <div>
-        <h2 className="font-semibold text-white">{title}</h2>
-        <p className="text-sm text-slate-400">{desc}</p>
+        <h2 className="font-semibold text-slate-800">{title}</h2>
+        <p className="text-sm text-slate-500">{desc}</p>
       </div>
     </div>
   );
@@ -29,12 +28,12 @@ function ToggleInput({
   return (
     <div className="flex items-center justify-between py-2">
       <div>
-        <div className="text-sm text-white">{label}</div>
+        <div className="text-sm text-slate-800">{label}</div>
         {hint && <div className="text-xs text-slate-500">{hint}</div>}
       </div>
       <button
         onClick={() => onChange(!value)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-cyan-600' : 'bg-slate-700'}`}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-orange-600' : 'bg-orange-200'}`}
       >
         <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${value ? 'translate-x-6' : 'translate-x-1'}`} />
       </button>
@@ -48,16 +47,16 @@ function TextInput({
   const [show, setShow] = useState(false);
   return (
     <div className="space-y-1">
-      <label className="text-sm text-slate-300">{label}</label>
+      <label className="text-sm text-slate-600">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type={masked && !show ? 'password' : type}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="flex-1 h-9 px-3 rounded-md bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 font-mono"
+          className="flex-1 h-9 px-3 rounded-md bg-orange-100 border border-orange-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 font-mono"
         />
         {masked && (
-          <button onClick={() => setShow(!show)} className="p-2 text-slate-500 hover:text-slate-300">
+          <button onClick={() => setShow(!show)} className="p-2 text-slate-500 hover:text-slate-600">
             {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         )}
@@ -72,14 +71,14 @@ function NumberInput({ label, value, onChange, unit, min, max, hint }: {
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-sm text-slate-300">{label}</label>
+      <label className="text-sm text-slate-600">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type="number"
           value={value}
           onChange={e => onChange(Number(e.target.value))}
           min={min} max={max}
-          className="flex-1 h-9 px-3 rounded-md bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+          className="flex-1 h-9 px-3 rounded-md bg-orange-100 border border-orange-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50"
         />
         {unit && <span className="text-slate-500 text-xs">{unit}</span>}
       </div>
@@ -93,11 +92,11 @@ function SelectInput({ label, value, onChange, options, hint }: {
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-sm text-slate-300">{label}</label>
+      <label className="text-sm text-slate-600">{label}</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full h-9 px-3 rounded-md bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+        className="w-full h-9 px-3 rounded-md bg-orange-100 border border-orange-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50"
       >
         {options.map(o => <option key={o} value={o}>{o}</option>)}
       </select>
@@ -110,9 +109,9 @@ function ConnStatus({ connected, label }: { connected: boolean; label: string })
   return (
     <div className="flex items-center gap-2">
       {connected
-        ? <CheckCircle className="h-4 w-4 text-green-400" />
-        : <XCircle className="h-4 w-4 text-red-400" />}
-      <span className={`text-sm ${connected ? 'text-green-400' : 'text-red-400'}`}>{label}</span>
+        ? <CheckCircle className="h-4 w-4 text-green-600" />
+        : <XCircle className="h-4 w-4 text-red-600" />}
+      <span className={`text-sm ${connected ? 'text-green-600' : 'text-red-600'}`}>{label}</span>
     </div>
   );
 }
@@ -164,7 +163,7 @@ export default function SettingsPage() {
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <SectionHeader icon={icon} title={title} desc={desc} />
-            {openSection === id ? <ChevronDown className="h-4 w-4 text-slate-400" /> : <ChevronRight className="h-4 w-4 text-slate-400" />}
+            {openSection === id ? <ChevronDown className="h-4 w-4 text-slate-500" /> : <ChevronRight className="h-4 w-4 text-slate-500" />}
           </div>
         </CardHeader>
       </button>
@@ -177,11 +176,11 @@ export default function SettingsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Settings className="h-6 w-6 text-cyan-400" />
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+            <Settings className="h-6 w-6 text-orange-400" />
             Settings
           </h1>
-          <p className="text-slate-400 text-sm mt-1">Configure the HADR platform appearance, models, and integrations.</p>
+          <p className="text-slate-500 text-sm mt-1">Configure RIO appearance, models, and integrations.</p>
         </div>
         <div className="flex gap-2">
           <Button size="sm" variant="ghost" onClick={() => window.location.reload()}>
@@ -197,7 +196,7 @@ export default function SettingsPage() {
       <Section id="appearance" icon={<Monitor className="h-5 w-5" />} title="Appearance" desc="Theme and display preferences">
         <div className="space-y-4">
           <div>
-            <div className="text-sm text-slate-300 mb-2">Theme</div>
+            <div className="text-sm text-slate-600 mb-2">Theme</div>
             <div className="flex gap-3">
               {([
                 { id: 'dark', icon: <Moon className="h-5 w-5" />, label: 'Dark' },
@@ -209,8 +208,8 @@ export default function SettingsPage() {
                   onClick={() => setTheme(t.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
                     theme === t.id
-                      ? 'border-cyan-600 bg-cyan-900/30 text-cyan-400'
-                      : 'border-slate-700 bg-slate-800 text-slate-400 hover:border-slate-600'
+                      ? 'border-orange-600 bg-orange-900/30 text-orange-400'
+                      : 'border-orange-200 bg-orange-100 text-slate-500 hover:border-orange-200'
                   }`}
                 >
                   {t.icon} {t.label}
@@ -221,7 +220,7 @@ export default function SettingsPage() {
               Note: Full theme switching requires backend session support. Current implementation uses CSS class strategy.
             </p>
           </div>
-          <div className="border-t border-slate-800 pt-4 space-y-2">
+          <div className="border-t border-orange-200 pt-4 space-y-2">
             <ToggleInput label="Compact Mode" value={compactMode} onChange={setCompactMode} hint="Reduce padding and spacing for smaller screens" />
             <ToggleInput label="Show Demo Banner" value={showDemoBanner} onChange={setShowDemoBanner} hint="Display the amber demonstration warning banner" />
           </div>
@@ -264,17 +263,17 @@ export default function SettingsPage() {
             />
           </div>
           <div>
-            <div className="text-sm text-slate-300 mb-2">Default Visible Layers</div>
+            <div className="text-sm text-slate-600 mb-2">Default Visible Layers</div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {Object.entries(defaultLayers).map(([layer, visible]) => (
                 <div key={layer} className="flex items-center gap-2">
                   <button
                     onClick={() => setDefaultLayers(l => ({ ...l, [layer]: !l[layer as keyof typeof l] }))}
-                    className={`w-4 h-4 rounded border flex items-center justify-center ${visible ? 'bg-cyan-600 border-cyan-600' : 'border-slate-600'}`}
+                    className={`w-4 h-4 rounded border flex items-center justify-center ${visible ? 'bg-orange-600 border-orange-600' : 'border-orange-200'}`}
                   >
-                    {visible && <CheckCircle className="h-3 w-3 text-white" />}
+                    {visible && <CheckCircle className="h-3 w-3 text-slate-800" />}
                   </button>
-                  <span className="text-sm text-slate-300 capitalize">{layer}</span>
+                  <span className="text-sm text-slate-600 capitalize">{layer}</span>
                 </div>
               ))}
             </div>
@@ -291,12 +290,12 @@ export default function SettingsPage() {
             onChange={setStoragePath}
             hint="Directory for simulation outputs, exports, and cached data"
           />
-          <div className="bg-slate-800 rounded-lg p-4">
-            <div className="text-sm font-medium text-white mb-2">Object Storage (MinIO / S3)</div>
+          <div className="bg-orange-100 rounded-lg p-4">
+            <div className="text-sm font-medium text-slate-800 mb-2">Object Storage (MinIO / S3)</div>
             <ConnStatus connected={false} label="Not configured — using local filesystem" />
             <p className="text-xs text-slate-500 mt-2">
-              Set <code className="bg-slate-900 px-1 rounded">MINIO_ENDPOINT</code>, <code className="bg-slate-900 px-1 rounded">MINIO_ACCESS_KEY</code>,
-              and <code className="bg-slate-900 px-1 rounded">MINIO_SECRET_KEY</code> in backend/.env to enable object storage.
+              Set <code className="bg-orange-50 px-1 rounded">MINIO_ENDPOINT</code>, <code className="bg-orange-50 px-1 rounded">MINIO_ACCESS_KEY</code>,
+              and <code className="bg-orange-50 px-1 rounded">MINIO_SECRET_KEY</code> in backend/.env to enable object storage.
             </p>
           </div>
         </div>
@@ -305,7 +304,7 @@ export default function SettingsPage() {
       {/* Model Configuration */}
       <Section id="models" icon={<Cpu className="h-5 w-5" />} title="Model Configuration" desc="Connect real hydraulic solver executables">
         <div className="space-y-6">
-          <div className="flex items-start gap-2 text-xs text-amber-400 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
+          <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
             Both models currently use MOCK implementations. The platform is ready to receive real solver executables.
           </div>
@@ -315,7 +314,7 @@ export default function SettingsPage() {
               name: 'SPH', full: 'Smooth Particle Hydrodynamics',
               exe: sphExe, setExe: setSphExe,
               envVar: 'SPH_EXECUTABLE',
-              color: 'violet',
+              color: 'orange',
               desc: 'Point to your SPH solver binary (e.g., DualSPHysics, SPlisHSPlasH). The adapter will pass generated input files and collect output TIF/CSV files.',
             },
             {
@@ -329,10 +328,8 @@ export default function SettingsPage() {
             <div key={m.name} className={`border border-${m.color}-700/40 rounded-lg p-4 space-y-3`}>
               <div className="flex items-center gap-2">
                 <span className={`font-semibold text-${m.color}-400`}>{m.name}</span>
-                <span className="text-slate-500 text-sm">— {m.full}</span>
-                <Badge variant="mock" className="ml-auto">MOCK ACTIVE</Badge>
-              </div>
-              <p className="text-xs text-slate-400">{m.desc}</p>
+                <span className="text-slate-500 text-sm">— {m.full}</span>              </div>
+              <p className="text-xs text-slate-500">{m.desc}</p>
               <TextInput
                 label={`Executable Path (${m.envVar})`}
                 value={m.exe}
@@ -348,7 +345,7 @@ export default function SettingsPage() {
       {/* GEE */}
       <Section id="gee" icon={<Satellite className="h-5 w-5" />} title="Google Earth Engine" desc="Satellite data integration for flood monitoring">
         <div className="space-y-4">
-          <div className="flex items-start gap-2 text-xs text-slate-400 bg-slate-800 rounded-lg p-3">
+          <div className="flex items-start gap-2 text-xs text-slate-500 bg-orange-100 rounded-lg p-3">
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
             GEE integration is not required for the demo. Configure when real satellite monitoring is needed.
           </div>
@@ -386,7 +383,7 @@ export default function SettingsPage() {
         <CardContent>
           <dl className="grid grid-cols-2 gap-2 text-sm">
             {[
-              ['Platform', 'HADR Flood Simulation Platform'],
+              ['Platform', 'RIO'],
               ['Version', '1.0.0-mvp'],
               ['Frontend', 'Next.js 14.2.5 + TypeScript'],
               ['Backend', 'FastAPI + Python 3.11'],
@@ -397,9 +394,9 @@ export default function SettingsPage() {
               ['Database', 'SQLite (Dev) / PostgreSQL+PostGIS (Prod)'],
               ['Worker', 'Threading (Dev) / Celery+Redis (Prod)'],
             ].map(([k, v]) => (
-              <div key={k} className="flex justify-between bg-slate-800 rounded px-3 py-2">
-                <span className="text-slate-400">{k}</span>
-                <span className="text-white text-right font-mono text-xs">{v}</span>
+              <div key={k} className="flex justify-between bg-orange-100 rounded px-3 py-2">
+                <span className="text-slate-500">{k}</span>
+                <span className="text-slate-800 text-right font-mono text-xs">{v}</span>
               </div>
             ))}
           </dl>

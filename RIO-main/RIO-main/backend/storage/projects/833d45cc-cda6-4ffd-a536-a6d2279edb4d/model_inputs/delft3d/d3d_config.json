@@ -1,0 +1,15 @@
+{
+  "model": "DELFT3D",
+  "model_version": "mock-delft3d-1.0",
+  "is_mock": true,
+  "solver": "Delft3D-FLOW (Mock)",
+  "grid_type": "Structured Curvilinear",
+  "advection_scheme": "Cyclic method (mock)",
+  "turbulence_model": "k-epsilon (mock)",
+  "time_step_s": 10.0,
+  "simulation_duration_hrs": 24.0,
+  "roughness_formula": "Manning",
+  "manning_n": 0.03,
+  "bed_roughness": "uniform",
+  "disclaimer": "MOCK DELFT3D \u2014 DEMONSTRATION ONLY"
+}

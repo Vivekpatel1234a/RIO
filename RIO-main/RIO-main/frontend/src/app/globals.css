@@ -3,24 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --primary: 188 94% 42%;
+  --background: 0 0% 100%;
+  --foreground: 222.2 47.4% 11.2%;
+  --primary: 24.6 95% 53.1%;
   --primary-foreground: 0 0% 100%;
-  --card: 222.2 84% 8%;
-  --card-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --ring: 188 94% 42%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 47.4% 11.2%;
+  --border: 30 60% 88%;
+  --ring: 24.6 95% 53.1%;
 }
 
 @layer base {
-  * { @apply border-slate-800; }
-  body { @apply bg-slate-950 text-slate-100; }
+  * { @apply border-orange-200; }
+  body { @apply bg-white text-slate-700 antialiased; }
 }
 
 @layer components {
-  .demo-badge { @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-900/40 text-amber-300 border border-amber-700/40; }
-  .mock-badge { @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-violet-900/40 text-violet-300 border border-violet-700/40; }
   .map-container { @apply w-full h-full; }
 }
 

@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import type { FloodResult } from '@/types';
 
@@ -22,37 +21,34 @@ export function FloodResultCard({ result, model }: { result: FloodResult; model:
     { label: 'Discharge CSV', key: 'discharge', ext: '.csv' },
   ];
   return (
-    <Card className={`border-${model==='SPH'?'violet':'blue'}-700/40`}>
+    <Card className={`border-${model==='SPH'?'orange':'blue'}-700/40`}>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <CardTitle>{model}</CardTitle>
-          <Badge variant="mock">MOCK</Badge>
-          <Badge variant="demo">DEMO</Badge>
-        </div>
-        <p className="text-xs text-amber-400 mt-1">{result.disclaimer}</p>
+          <CardTitle>{model}</CardTitle>        </div>
+        <p className="text-xs text-amber-700 mt-1">{result.disclaimer}</p>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-3 mb-4">
           {metrics.map(m => (
-            <div key={m.label} className="bg-slate-800 rounded-lg p-3">
-              <div className="text-xs text-slate-400">{m.icon} {m.label}</div>
-              <div className="text-lg font-bold text-white mt-1">{m.value || '—'}</div>
+            <div key={m.label} className="bg-orange-100 rounded-lg p-3">
+              <div className="text-xs text-slate-500">{m.icon} {m.label}</div>
+              <div className="text-lg font-bold text-slate-800 mt-1">{m.value || '—'}</div>
             </div>
           ))}
         </div>
         <div className="space-y-1">
-          <div className="text-xs text-slate-400 mb-2 font-medium">EXPORTS</div>
+          <div className="text-xs text-slate-500 mb-2 font-medium">EXPORTS</div>
           {exports.map(e => {
             const path = result.file_paths?.[e.key];
             return (
               <div key={e.key} className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">{e.label}</span>
+                <span className="text-slate-500">{e.label}</span>
                 {path ? (
                   <a href={`${API_BASE}/api/exports/download?path=${encodeURIComponent(path)}`}
-                    className="text-cyan-400 hover:text-cyan-300 text-xs flex items-center gap-1" download>
+                    className="text-orange-400 hover:text-orange-600 text-xs flex items-center gap-1" download>
                     ↓ Download
                   </a>
-                ) : <span className="text-slate-600 text-xs">Not available</span>}
+                ) : <span className="text-slate-500 text-xs">Not available</span>}
               </div>
             );
           })}
